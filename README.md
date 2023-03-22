@@ -12,5 +12,5 @@ cd bird_watching
 npm install
 
 # run
-./bin/www 
+npm run dev
 ```
