@@ -6,10 +6,9 @@ var RecordsSchema = new Schema(
     {
         description: {type: String, required: true, max: 100},
         date_time: {type: String, required: true, max: 100},
-        nickname: {type: String, required: true, max: 100},
         latitude: {type: String, required: true, max: 100},
         longitude: {type: String, required: true, max: 100},
-        imageurl: {type: String, required: true, max: 100},
+        userid: {type: String, required: true, max: 100},
     }
 );
 

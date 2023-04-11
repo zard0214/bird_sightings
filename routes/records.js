@@ -18,8 +18,8 @@ var router = express.Router();
  *        505:
  *          description: service error
  * */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/add', function(req, res, next) {
+    res.render('addrecords', { title: 'Add Record' });
 });
 
 module.exports = router;

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="/javascripts/addrecords.js"></script>
+    <style>
+        body {
+            background: #edf0f2;
+        }
+        img {
+            width: 100%;
+            display: block;
+            border: none;
+            vertical-align: bottom;
+            border: none;
+        }
+        input[type="button"] {
+            -webkit-appearance: none;
+        }
+        .pDrawingBox {
+            background-color: #fcfcfc;
+            color: #333333;
+            font-size: 16px;
+            padding-left: 11px;
+            border-bottom: solid 1px #e5e5e5;
+        }
+        .description {
+            height: 44px;
+            line-height: 44px;
+        }
+        .pImg {
+            height: 96px;
+            overflow: hidden;
+        }
+        .imgBiMG{
+            width: 78px;
+            height: 81px;
+            float: left;
+            display: block;
+        }
+        .uploadImg {
+            width: 78px;
+            height: 81px;
+            background-color: #edf0f2;
+            font-size: 28px;
+            color: #bfbfbf;
+            text-align: center;
+            line-height: 81px;
+            float: left;
+            position: relative;
+        }
+        .uploadImg input {
+            width: 78px;
+            height: 78px;
+            opacity: 0;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            z-index: 4;
+            padding: 0;
+        }
+    </style>
+</head>
+<body onload="addrecord()">
+<h1><%= title %></h1>
+<label for='describe'>Say something</label>
+<input type="text" name="describe" id="describe" value="">
+<div class="pDrawingBox">
+    <div class="description">upload</div>
+    <div class="pImg">
+        <div id="uploadBox">
+        </div>
+        <div class="uploadImg">
+            <span>+</span><input type="file" name="file" multiple id="inputs" accept="image/*" class='fileTest' multiple="multiple" />
+        </div>
+    </div>
+</div>
+<p><input type="submit" name="g" value="Submit" id="g"></p>
+</body>
+</html>
