@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1/Bird').then(() => {
-    console.log("连接成功");
+mongoose.connect('mongodb://127.0.0.1/bird_watching').then(() => {
+    console.log("success");
 }).catch((err) => {
     console.log("err");
 });
