@@ -11,7 +11,23 @@ router.get('/login', (req, res) => {
     res.render('login', { title: 'My Bird Login' });
 });
 
-/* GET users listing. */
+/**,
+ * @swagger
+ * /: #
+ *    post:
+ *      tags: #login
+ *      - index
+ *      summary: login
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      - parameter 1: nickname
+ *      responses:
+ *        200:
+ *          description: successful operation
+ *        505:
+ *          description: service error
+ * */
 router.post('/login', function(req, res, next) {
     try {
         let nickname = req.body.nickname;
@@ -23,7 +39,6 @@ router.post('/login', function(req, res, next) {
             });
         } else
             User.create(req.body).then((r) => {
-                console.log(req.body);
                 res.redirect('/chat');
             });
     } catch (err) {
