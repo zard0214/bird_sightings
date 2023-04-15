@@ -13,20 +13,29 @@ router.get('/login', (req, res) => {
 
 /**,
  * @swagger
- * /: #
+ * /login:
  *    post:
- *      tags: #login
- *      - index
+ *      tags:
+ *      - login
  *      summary: login
  *      produces:
  *      - application/json
  *      parameters:
- *      - parameter 1: nickname
+ *      - nickname: nickname
+ *        in: query
+ *        description: nickname
+ *        required: false
+ *        type: integer
+ *        maximum:
+ *        minimum: 1
+ *        format:
  *      responses:
  *        200:
  *          description: successful operation
- *        505:
- *          description: service error
+ *          schema:
+ *            ref: #/login
+ *        500:
+ *          description: Internal server error
  * */
 router.post('/login', function(req, res, next) {
     try {

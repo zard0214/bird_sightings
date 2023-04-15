@@ -4,11 +4,12 @@ var Schema = mongoose.Schema;
 
 var RecordsSchema = new Schema(
     {
-        description: {type: String, required: true, max: 100},
-        date_time: {type: String, required: true, max: 100},
-        latitude: {type: String, required: true, max: 100},
-        longitude: {type: String, required: true, max: 100},
-        userid: {type: String, required: true, max: 100},
+        description: {type: String, required: true, max: 500},
+        dateTime: {type: Date, required: true, max: 100},
+        latitude: {type: Number, required: true, max: 100},
+        longitude: {type: Number, required: true, max: 100},
+        // nickName: {type: String, required: true, max: 100},
+        userId: {type: String, required: true, max: 15},
     }
 );
 

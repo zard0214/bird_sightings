@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 
 var ImagesSchema = new Schema(
     {
-        imageurl: {type: String, required: true, max: 100},
-        recordid: {type: String, required: true, max: 100},
+        imageUrl: {type: String, required: true, max: 100},
+        recordId: {type: String, required: true, max: 100},
     }
 );
 
