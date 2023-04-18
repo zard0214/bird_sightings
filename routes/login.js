@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-let {User}=require("../databases/index")
+let {User}=require("../databases/users")
 
 router.get('/', (req, res) => {
     res.render('login', { title: 'My Bird Login' });
@@ -21,11 +21,13 @@ router.post('/', function(req, res, next) {
 
             User.create(req.body).then((r) => {
                 console.log(req.body);
-                res.json({
-                    code: 1,
-                    msg: "登陆成功",
-                })
+                req.session.username = nickname;
+
+                // Redirect to new page upon successful login
+                res.redirect('/sightings');
+
             })
+
 
         }
 

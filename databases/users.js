@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1/Bird').then(() => {
+mongoose.connect('mongodb://127.0.0.1/Bird' , { useNewUrlParser: true }).then(() => {
     console.log("连接成功");
 }).catch((err) => {
     console.log("err");
