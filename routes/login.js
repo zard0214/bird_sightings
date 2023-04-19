@@ -1,7 +1,16 @@
 var express = require('express');
 var router = express.Router();
+const session = require('express-session');
 
-let {User}=require("../databases/index")
+
+let {User}=require("../databases/users")
+
+router.use(session({
+    secret: 'my-secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
 router.get('/', (req, res) => {
     res.redirect('login');
@@ -48,7 +57,8 @@ router.post('/login', function(req, res, next) {
             });
         } else
             User.create(req.body).then((r) => {
-                res.redirect('/chat');
+                req.session.nickname = nickname;
+                res.redirect(`/sightings?nickname=${nickname}`);
             });
     } catch (err) {
         // If there's an error, return an error message and log the error to the console

@@ -25,15 +25,15 @@ const birdSchema = new Schema({
 });
 
 const Bird = mongoose.model('Bird', birdSchema);
-// for (let i = 1; i <= 10; i++) {
-//     const bird = new Bird({
-//         Time: '2023-04-13 12:30:00',
-//         Identification: 'UNKONW',
-//         location: 'Central Park',
-//         Witnesses:User.nickname="JIE",
-//     });
-//     bird.save();
-// }
+for (let i = 1; i <= 10; i++) {
+    const bird = new Bird({
+        Time: '2023-04-13 12:30:00',
+        Identification: 'UNKONW',
+        location: 'Central Park',
+        Witnesses:User.nickname="JIE",
+    });
+    bird.save();
+}
 module.exports = {
     mongoose,
     birdSchema,

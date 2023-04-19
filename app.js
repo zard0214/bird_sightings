@@ -9,6 +9,7 @@ var chat = require('./routes/chat');
 var users = require('./routes/users');
 var records = require('./routes/records');
 var login=require('./routes/login');
+var sightings=require('./routes/sighting')
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use('/login', login);
 app.use('/users', users);
 app.use('/records', records);
 app.use('/chat', chat)
+app.use('/sightings',sightings)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
