@@ -130,7 +130,6 @@ ul.pagination li a {
 }
 
 
-
 ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 
 div.center {
@@ -138,62 +137,3 @@ div.center {
     width: 100%;
     text-align: center;
 }
-/*.select-menu {*/
-/*    position: relative;*/
-/*    display: inline-block;*/
-/*}*/
-
-/*.select {*/
-/*    cursor: pointer;*/
-/*    padding: 8px 16px;*/
-/*    border: 1px solid #ccc;*/
-/*    border-radius: 4px;*/
-/*}*/
-
-/*.option-list {*/
-/*    position: absolute;*/
-/*    top: 100%;*/
-/*    left: 0;*/
-/*    z-index: 1;*/
-/*    display: none;*/
-/*    min-width: 160px;*/
-/*    padding: 8px 0;*/
-/*    margin: 0;*/
-/*    background-color: #fff;*/
-/*    border: 1px solid #ccc;*/
-/*    border-top: none;*/
-/*    border-radius: 0 0 4px 4px;*/
-/*}*/
-
-/*.option-list .option {*/
-/*    display: block;*/
-/*    padding: 8px 16px;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.option-list .option:hover {*/
-/*    background-color: #f4f4f4;*/
-/*}*/
-
-/*.select.active .option-list {*/
-/*    display: block;*/
-/*}*/
-/*.select-menu{*/
-/*    width:300px;*/
-/*    cursor:pointer;*/
-/*    positin:relative;*/
-/*}*/
-/*.select{*/
-/*    background-color: #D66E4E;*/
-/*    padding: 20px;*/
-/*    colour:#fff;*/
-/*    font-weight: 500;*/
-/*    border-radius: 10px;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: space-between;*/
-
-/*}*/
-/*.option-list{*/
-/*    padding:*/
-/*}*/

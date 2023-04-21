@@ -5,11 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var chat = require('./routes/chat');
-var users = require('./routes/users');
-var records = require('./routes/records');
-var login=require('./routes/login');
-var sightings=require('./routes/sighting')
+var login = require('./routes/user');
+var sighting = require('./routes/sighting');
 
 var app = express();
 
@@ -31,10 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', login);
 app.use('/login', login);
-app.use('/users', users);
-app.use('/records', records);
-app.use('/chat', chat)
-app.use('/sightings',sightings)
+app.use('/sighting', sighting);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -42,7 +36,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handler
+// error han
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
