@@ -15,6 +15,10 @@ const fetchSightingWithPage = async (req, res, next) => {
         if (bodyKey === 'pageNum') {
             delete body[bodyKey];
         }
+        if (bodyKey === 'startTime' || bodyKey === 'endTime') {
+            // body.
+            delete body[bodyKey];
+        }
         console.log('bodyKey: ' + bodyKey)
         console.log('body[bodyKey]: ' + body[bodyKey])
     }

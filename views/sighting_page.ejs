@@ -14,8 +14,10 @@
 <div class="container">
     <div class="search-container">
         <form action="/sighting/fetchSightingWithPage" method="GET">
+            <input style="width: 230px" type="datetime-local" name="startTime" id="startTime" >
+            <input style="width: 230px" type="datetime-local" name="endTime" id="endTime">
             <input style="width: 280px" type="text" name="Witnesses" id="Witnesses" placeholder="username" value="<%= Witnesses %>">
-            <button style="width: 85px" type="submit">Search</button>
+            <button style="width: 135px" type="submit">Search</button>
         </form>
     </div>
     <form action="/logout" method="POST" id="login_form">
