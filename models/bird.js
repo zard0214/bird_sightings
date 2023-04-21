@@ -16,6 +16,20 @@ const birdSchema = new mongoose.Schema({
     timestamps: true
 });
 
+birdSchema.static.totalCount = function (findArgs) {
+    return new Promise(async (resolve, reject) => {
+        await Bird.countDocuments({})
+            .then((num) => {
+                console.log('num: ' + num)
+                resolve(num);
+            })
+            .catch((err) => {
+                console.log(err);
+                reject(err);
+            });
+    });
+};
+
 birdSchema.static.findSightingPage =
     function(findArgs = {},
              pageNum = 1,
@@ -28,10 +42,10 @@ birdSchema.static.findSightingPage =
         //     console.log('bodyKey: ' + bodyKey)
         //     console.log('body[bodyKey]: ' + findArgs[bodyKey])
         // }
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const skipNum = (pageNum - 1) * pageSize;
             console.log('skipNum: ' + skipNum)
-            Bird.find({})
+            await Bird.find({})
                 // .sort({updateTime: -1})
                 .limit(pageSize)
                 .skip(skipNum)
