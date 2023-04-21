@@ -46,6 +46,6 @@ router.get('/login', (req, res) => {
  * */
 router.post('/login', User.login);
 
-router.get('/logout', User.logout);
+router.post('/logout', User.logout);
 
 module.exports = router

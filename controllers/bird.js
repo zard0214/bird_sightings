@@ -1,6 +1,6 @@
 const Bird = require('../models/bird');
 
-const findSightingPage = async (req, res, next) => {
+const fetchSightingWithPage = async (req, res, next) => {
     const body = req.query;
     let nickname = req.session.nickname
     let pageNum = 1;
@@ -12,13 +12,12 @@ const findSightingPage = async (req, res, next) => {
         if (body[bodyKey] === '') {
             delete body[bodyKey];
         }
-        if (body[bodyKey] === 'pageNum') {
+        if (bodyKey === 'pageNum') {
             delete body[bodyKey];
         }
         console.log('bodyKey: ' + bodyKey)
         console.log('body[bodyKey]: ' + body[bodyKey])
     }
-
     //max data in one page
     let pageSize = 10;
     //get data
@@ -26,16 +25,16 @@ const findSightingPage = async (req, res, next) => {
     //page Number
     let total = Math.ceil(count / pageSize);
 
-    await Bird.schema.static.findSightingPage(body, pageNum, pageSize)
+    await Bird.schema.static.fetchSightingWithPage(body, pageNum, pageSize)
         .then((doc) => {
             const birds = doc
             res.render('sighting_page', {
-                nickname: nickname, birds: birds, page: pageNum, total: total,
+                nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,
             });
         });
 };
 
 
 module.exports = {
-    findSightingPage: findSightingPage
+    fetchSightingWithPage: fetchSightingWithPage
 };

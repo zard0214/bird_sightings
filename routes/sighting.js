@@ -28,8 +28,8 @@ const Bird = require('../controllers/bird');
  *        500:
  *          description: Internal server error
  * */
-router.get('/recordPage', (req, res) => {
-    Bird.findSightingPage(req, res);
+router.get('/fetchSightingWithPage', (req, res) => {
+    Bird.fetchSightingWithPage(req, res);
 });
 
 

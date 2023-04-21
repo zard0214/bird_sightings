@@ -14,9 +14,8 @@ function login(req, res) {
                 message: 'Username are required fields',
             });
         }
-        //TODO save username in the web persistance
         req.session.nickname = nickname;
-        res.redirect('/sighting/recordPage');
+        res.redirect('/sighting/fetchSightingWithPage');
     } catch (err) {
         // If there's an error, return an error message and log the error to the console
         console.error(err);

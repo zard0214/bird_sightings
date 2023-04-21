@@ -30,7 +30,7 @@ birdSchema.static.totalCount = function (findArgs) {
     });
 };
 
-birdSchema.static.findSightingPage =
+birdSchema.static.fetchSightingWithPage =
     function(findArgs = {},
              pageNum = 1,
              pageSize = 10) {
@@ -38,10 +38,10 @@ birdSchema.static.findSightingPage =
         console.log('pageNum: ' + pageNum)
         console.log('pageSize: ' + pageSize)
         // if(findArgs === undefined || findArgs.)
-        // for (const bodyKey in findArgs) {
-        //     console.log('bodyKey: ' + bodyKey)
-        //     console.log('body[bodyKey]: ' + findArgs[bodyKey])
-        // }
+        for (const bodyKey in findArgs) {
+            console.log('findArgs: ' + bodyKey)
+            console.log('findArgs[bodyKey]: ' + findArgs[bodyKey])
+        }
         return new Promise(async (resolve, reject) => {
             const skipNum = (pageNum - 1) * pageSize;
             console.log('skipNum: ' + skipNum)

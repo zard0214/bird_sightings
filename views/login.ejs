@@ -17,7 +17,7 @@
 
 </style>
 <body>
-<form action="" method="POST">
+<form action="" method="POST" id="login_form">
     <div class="wall">
         <div class="form">
             <div class="imgBx"><img src="/image/tinybird.gif"></div>
@@ -26,9 +26,8 @@
                     <h1>Bird Watching</h1>
                     <h3>NICKNAME</h3>
                     <input class="text" type="text" name="nickname">
-                    <input class="btn" type="submit" value="Login">
+                    <input class="btn" type="submit" value="Login" onclick="saveInIndexedDB()">
                 </div>
-
             </div>
         </div>
     </div>
@@ -36,3 +35,33 @@
 </form>
 </body>
 </html>
+<script>
+    function saveInIndexedDB() {
+        //TODO save username in the web persistance
+        indexedDB.open("bird_watching", 1)
+        indexedDB.onerror = function(event) {
+            console.log("Error opening database.");
+        };
+        indexedDB.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            const objectStore = db.createObjectStore("users", { keyPath: "id" });
+            objectStore.createIndex("nickname", "nickname", { unique: true });
+        };
+        indexedDB.onsuccess = function (event){
+            const db = event.target.result;
+            // const transaction = db.transaction(["users"], "readwrite");
+            // const objectStore = transaction.objectStore("users");
+            //
+            // const users = { name: nickname };
+            // const request = objectStore.add(users);
+            //
+            // request.onerror = function(event) {
+            //     console.log("Error adding customer to database.");
+            // };
+            //
+            // request.onsuccess = function(event) {
+            //     console.log("Customer added to database.");
+            // };
+        }
+    }
+</script>
