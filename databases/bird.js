@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
+const config = require('../config/config');
 const { userSchema } = require('./users.js');
 
-mongoose.connect('mongodb://127.0.0.1/Bird' , { useNewUrlParser: true }).then(() => {
-    console.log("连接成功");
-}).catch((err) => {
-    console.log("err");
-});
+mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
 const Schema = mongoose.Schema;
 
@@ -25,15 +22,15 @@ const birdSchema = new Schema({
 });
 
 const Bird = mongoose.model('Bird', birdSchema);
-for (let i = 1; i <= 10; i++) {
-    const bird = new Bird({
-        Time: '2023-04-13 12:30:00',
-        Identification: 'UNKONW',
-        location: 'Central Park',
-        Witnesses:User.nickname="JIE",
-    });
-    bird.save();
-}
+// for (let i = 1; i <= 10; i++) {
+//     const bird = new Bird({
+//         Time: '2023-04-13 12:30:00',
+//         Identification:'woodpecker',
+//         location: 'Central Park',
+//         Witnesses:User.nickname="alu",
+//     });
+//     bird.save();
+// }
 module.exports = {
     mongoose,
     birdSchema,

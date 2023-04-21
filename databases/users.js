@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
+const config = require('../config/config');
 
-mongoose.connect('mongodb://127.0.0.1/bird_watching').then(() => {
-    console.log("success");
-}).catch((err) => {
-    console.log("err");
-});
+mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
 const Schema = mongoose.Schema;
 
