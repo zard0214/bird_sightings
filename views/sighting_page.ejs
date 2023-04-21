@@ -13,8 +13,10 @@
 <body>
 <div class="container">
     <div class="search-container">
-        <input type="text">
-        <button>Search</button>
+        <form action="/sighting/recordPage" method="GET">
+            <input style="width: 280px" type="text" name="Witnesses" id="Witnesses" placeholder="username" >
+            <button style="width: 85px"type="submit">Search</button>
+        </form>
     </div>
     <div class="exit-container">
         <button class="exit-btn">Exit</button>

@@ -18,7 +18,7 @@ const birdSchema = new mongoose.Schema({
 
 birdSchema.static.totalCount = function (findArgs) {
     return new Promise(async (resolve, reject) => {
-        await Bird.countDocuments({})
+        await Bird.countDocuments(findArgs)
             .then((num) => {
                 console.log('num: ' + num)
                 resolve(num);
@@ -45,7 +45,7 @@ birdSchema.static.findSightingPage =
         return new Promise(async (resolve, reject) => {
             const skipNum = (pageNum - 1) * pageSize;
             console.log('skipNum: ' + skipNum)
-            await Bird.find({})
+            await Bird.find(findArgs)
                 // .sort({updateTime: -1})
                 .limit(pageSize)
                 .skip(skipNum)
