@@ -5,8 +5,10 @@ mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
 const birdSchema = new mongoose.Schema({
     Time: String,
-    Identification:String,
-    location:String,
+    Identification: String,
+    location: String,
+    latitude: Number,
+    longitude: Number,
     Witnesses: {
         type: String,
         ref: 'users'
