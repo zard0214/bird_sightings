@@ -48,6 +48,6 @@ router.get('/login', (req, res) => {
  * */
 router.post('/login', User.login);
 
-router.post('/logout', User.logout);
+router.get('/logout', User.logout);
 
 module.exports = router

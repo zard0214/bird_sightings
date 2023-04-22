@@ -15,7 +15,8 @@ function login(req, res) {
             });
         }else{
             req.session.nickname = nickname;
-            res.redirect('/sighting/fetchSightingWithPage');
+            // res.redirect('/sighting/fetchSightingWithPage');
+            res.redirect('/record');
         }
     } catch (err) {
         // If there's an error, return an error message and log the error to the console

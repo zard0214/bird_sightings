@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var login = require('./routes/user');
 var sighting = require('./routes/sighting');
+var index = require('./routes/index');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', login);
 app.use('/login', login);
 app.use('/sighting', sighting);
+app.use('/record', index);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
