@@ -62,6 +62,21 @@ birdSchema.static.fetchSightingWithPage =
         });
     };
 
+birdSchema.static.findRecordById =
+    function(findArgs = {}) {
+        return new Promise(async (resolve, reject) => {
+            await Bird.find(findArgs)
+                .exec()
+                .then((doc) => {
+                    resolve(doc);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    reject(err);
+                });
+        });
+    };
+
 const Bird = mongoose.model('birds', birdSchema);
 
 module.exports = Bird;

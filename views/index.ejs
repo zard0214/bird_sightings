@@ -8,8 +8,6 @@
 
 <div class="container-fluid text-center">
     <h3><%= title %></h3><br>
-<!--    <div class="row">-->
-<!--    </div>-->
     <div class="container">
         <div class="search-container">
             <form action="/record" method="GET">
@@ -22,7 +20,7 @@
     </div>
     <table class="table table-bordered" style="margin-top: 30px">
         <thead>
-        <tr><th>ID</th><th>Time</th><th>Identification</th><th>Location</th><th>User</th></tr>
+        <tr><th style="text-align:center;">ID</th><th style="text-align:center;">Time</th><th style="text-align:center;">Identification</th><th style="text-align:center;">Location</th><th style="text-align:center;">User</th><th style="text-align:center;">Action</th></tr>
         </thead>
         <tbody>
         <tbody>
@@ -34,6 +32,9 @@
                 <td><%=birds[i].Identification%></td>
                 <td><%=birds[i].location%></td>
                 <td><%=birds[i].Witnesses%></td>
+                <td><a href="/record/detail?_id=<%= birds[i]._id %>">
+                        <button class="btn-info">Detail</button></a>
+                </td>
             </tr>
         <% } %>
         </tbody>

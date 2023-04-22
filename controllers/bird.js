@@ -69,7 +69,32 @@ const fetchRecords = async (req, res, next) => {
         .then((doc) => {
             const birds = doc
             res.render('index', {
-                title:'Record', menuId:'home', nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,
+                    title:'Records', menuId:'home', nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,
+            });
+        });
+};
+
+const findRecordById = async (req, res, next) => {
+    const body = req.query;
+    let nickname = req.session.nickname
+    let _id = 1;
+    if (req.query._id != undefined) {
+        _id = req.query._id;
+    }
+    for (const bodyKey in body) {
+        if (body[bodyKey] === '') {
+            delete body[bodyKey];
+        }
+        console.log('bodyKey: ' + bodyKey)
+        console.log('body[bodyKey]: ' + body[bodyKey])
+    }
+    await Bird.schema.static.findRecordById(body)
+        .then((doc) => {
+            const bird = doc
+            console.log('birdSchema.static.findRecordById: ' + doc)
+            console.log('nickname: ' + nickname)
+            res.render('detail', {
+                title:'Record Detail', menuId:'home', bird: bird, nickname: nickname,
             });
         });
 };
@@ -77,5 +102,6 @@ const fetchRecords = async (req, res, next) => {
 
 module.exports = {
     fetchSightingWithPage: fetchSightingWithPage,
-    fetchRecords: fetchRecords
+    fetchRecords: fetchRecords,
+    findRecordById: findRecordById
 };

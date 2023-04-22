@@ -20,16 +20,17 @@ function init() {
             hideLoginInterface(room, userId);
         } else {
             // notifies that someone has joined the room
-            writeOnHistory('<b>'+userId+'</b>' + ' joined room ' + room);
+            writeOnHistory('<b style="padding: 15px">'+userId+'</b>' + ' joined room ' + room);
         }
     });
     // called when a message is received
     socket.on('chat', function (room, userId, chatText) {
         let who = userId
         if (userId === name) who = 'Me';
-        writeOnHistory('<b>' + who + ':</b> ' + chatText);
+        writeOnHistory('<b style="padding: 15px">' + who + ':</b> ' + chatText);
     });
 
+    connectToRoom();
 }
 
 /**
@@ -82,6 +83,6 @@ function writeOnHistory(text) {
 function hideLoginInterface(room, userId) {
     document.getElementById('initial_form').style.display = 'none';
     document.getElementById('chat_interface').style.display = 'block';
-    document.getElementById('who_you_are').innerHTML= userId;
+    // document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' '+room;
 }
