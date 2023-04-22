@@ -50,7 +50,7 @@ app.use(function(err, req, res, next) {
   if(err.status === 404)
     res.render('error', {status: err.status, message: 'Page Not Found'});
   else
-    res.render('error', {status: err.status, message: 'Page Not Found'});
+    res.render('error', {status: err.status, message: err.message});
 });
 
 

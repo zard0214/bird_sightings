@@ -45,11 +45,11 @@
 
 <div class="container-fluid center" style="text-align:center;">
     <ul class="pagination" style="display: inline-block;float: none;">
-        <li><a href="#">&laquo;</a></li>
+        <li><a href="/record?pageNum=<%-page < 2 ? 1 : parseInt(page) - 1 %>">&laquo;</a></li>
         <% for(var i = 1; i <= total; i ++) { %>
             <li><a href="/record?pageNum=<%= i %>"><%= i %></a></li>
         <% } %>
-        <li><a href="#">&raquo;</a></li>
+        <li><a href="/record?pageNum=<%= page > parseInt(total) - 1 ? total : parseInt(page) + 1 %>">&raquo;</a></li>
     </ul>
 </div>
 </body>
