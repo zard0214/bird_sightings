@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/login.css'>
-
-
 </head>
 <style>
 
@@ -25,8 +23,10 @@
                 <div class="formBx-c">
                     <h1>Bird Watching</h1>
                     <h3>NICKNAME</h3>
-                    <input class="text" type="text" name="nickname">
-                    <input class="btn" type="submit" value="Login" onclick="saveInIndexedDB()">
+                    <form id="login_form">
+                        <input class="text" type="text" name="nickname" id="nickname">
+                        <button id="login" class="btn" type="submit" value="Login">Login</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -36,32 +36,57 @@
 </body>
 </html>
 <script>
-    function saveInIndexedDB() {
-        //TODO save username in the web persistance
-        indexedDB.open("bird_watching", 1)
-        indexedDB.onerror = function(event) {
-            console.log("Error opening database.");
-        };
-        indexedDB.onupgradeneeded = function(event) {
-            const db = event.target.result;
-            const objectStore = db.createObjectStore("users", { keyPath: "id" });
-            objectStore.createIndex("nickname", "nickname", { unique: true });
-        };
-        indexedDB.onsuccess = function (event){
-            const db = event.target.result;
-            // const transaction = db.transaction(["users"], "readwrite");
-            // const objectStore = transaction.objectStore("users");
-            //
-            // const users = { name: nickname };
-            // const request = objectStore.add(users);
-            //
-            // request.onerror = function(event) {
-            //     console.log("Error adding customer to database.");
-            // };
-            //
-            // request.onsuccess = function(event) {
-            //     console.log("Customer added to database.");
-            // };
-        }
+
+    const nicknameInput = document.getElementById('nickname');
+    const form = document.getElementById('login_form');
+    const submitBtn = document.getElementById('login');
+
+    let db;
+
+    const openRequest = window.indexedDB.open('bird_watching', 1);
+
+    openRequest.addEventListener('error', () => console.error('Database failed to open'));
+
+    openRequest.addEventListener('success', () => {
+        console.log('Database opened succesfully');
+
+        db = openRequest.result;
+    });
+
+    openRequest.addEventListener('upgradeneeded', e => {
+
+        db = e.target.result;
+
+        const objectStore = db.createObjectStore('users', { keyPath: 'id', autoIncrement:true });
+
+        objectStore.createIndex('nickname', 'nickname', { unique: false });
+
+        console.log('Database setup complete');
+    });
+
+    form.addEventListener('submit', addData);
+
+    function addData(e) {
+
+        e.preventDefault();
+
+        const newItem = { nickname: nicknameInput.value };
+
+        const transaction = db.transaction(['users'], 'readwrite');
+
+        const objectStore = transaction.objectStore('users');
+
+        const addRequest = objectStore.add(newItem);
+
+        addRequest.addEventListener('success', () => {
+            nicknameInput.value = '';
+        });
+
+        transaction.addEventListener('complete', () => {
+            console.log('Transaction completed: database modification finished.');
+        });
+
+        transaction.addEventListener('error', () => console.log('Transaction not opened due to error'));
     }
+
 </script>

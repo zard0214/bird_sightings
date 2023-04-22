@@ -41,6 +41,8 @@ router.get('/login', (req, res) => {
  *          description: successful operation
  *          schema:
  *            ref: #/login
+ *        400:
+ *          description: Username are required fields
  *        500:
  *          description: Internal server error
  * */

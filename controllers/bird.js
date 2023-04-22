@@ -7,7 +7,6 @@ const fetchSightingWithPage = async (req, res, next) => {
     if (req.query.pageNum != undefined) {
         pageNum = req.query.pageNum;
     }
-
     for (const bodyKey in body) {
         if (body[bodyKey] === '') {
             delete body[bodyKey];
