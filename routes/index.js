@@ -1,12 +1,14 @@
 var express = require('express');
+const Bird = require("../controllers/bird");
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-  res.render('index', {page:'Record', menuId:'home'});
+  Bird.fetchRecords(req, res);
+  // res.render('index', {page:'Record', menuId:'home'});
 });
 
 router.get('/nearby', function(req, res, next) {
-  res.render('nearby', {page:'Nearby', menuId:'about'});
+  res.render('nearby', {title:'Nearby', menuId:'about'});
 });
 
 module.exports = router;

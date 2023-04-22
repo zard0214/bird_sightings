@@ -6,15 +6,42 @@
 <body>
 <%- include('includes/menu.ejs') %>
 
-<div class="container-fluid bg-3 text-center">
-    <h3><%= page %></h3><br>
-    <div class="row">
-        <BootstrapTable>
+<div class="container-fluid text-center">
+    <h3><%= title %></h3><br>
+<!--    <div class="row">-->
+<!--    </div>-->
+    <table class="table table-bordered">
+        <thead>
+        <tr><th>ID</th><th>Time</th><th>Identification</th><th>Location</th><th>User</th></tr>
+        </thead>
+        <tbody>
+        <tbody>
+        <% var id = (page - 1 ) * 10; %>
+        <% for (var i = 0; i < birds.length; i++) { %>
+            <tr>
+                <td><%= id + i + 1 %></td>
+                <td><%=birds[i].Time%></td>
+                <td><%=birds[i].Identification%></td>
+                <td><%=birds[i].location%></td>
+                <td><%=birds[i].Witnesses%></td>
+            </tr>
+        <% } %>
+        </tbody>
+        </tbody>
 
-        </BootstrapTable>
-    </div>
+
+    </table>
 </div>
 
+<div class="container-fluid center" style="text-align:center;">
+    <ul class="pagination" style="display: inline-block;float: none;">
+        <li><a href="#">&laquo;</a></li>
+        <% for(var i = 1; i <= total; i ++) { %>
+            <li><a href="/record?pageNum=<%= i %>"><%= i %></a></li>
+        <% } %>
+        <li><a href="#">&raquo;</a></li>
+    </ul>
+</div>
 </body>
 <%- include('includes/script.ejs') %>
 </html>
