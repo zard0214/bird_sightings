@@ -10,7 +10,17 @@
     <h3><%= title %></h3><br>
 <!--    <div class="row">-->
 <!--    </div>-->
-    <table class="table table-bordered">
+    <div class="container">
+        <div class="search-container">
+            <form action="/record" method="GET">
+                <input style="width: 230px" type="datetime-local" name="startTime" id="startTime" >
+                <input style="width: 230px" type="datetime-local" name="endTime" id="endTime">
+                <input style="width: 230px" type="text" name="Witnesses" id="Witnesses" placeholder="username" value="<%= Witnesses %>">
+                <button style="width: 135px" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-bordered" style="margin-top: 30px">
         <thead>
         <tr><th>ID</th><th>Time</th><th>Identification</th><th>Location</th><th>User</th></tr>
         </thead>
