@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>BIRD</title>
-    <link rel='stylesheet' href='/stylesheets/sightings.css'>
-</head>
+<%- include('includes/head.ejs') %>
 
-   <header>
+    <header>
     <h1>BIRD</h1>
     </header>
         <div class="user">Welcome, <%= nickname %></div>
@@ -16,7 +12,7 @@
         <form action="/sighting/fetchSightingWithPage" method="GET">
             <input style="width: 230px" type="datetime-local" name="startTime" id="startTime" >
             <input style="width: 230px" type="datetime-local" name="endTime" id="endTime">
-            <input style="width: 280px" type="text" name="Witnesses" id="Witnesses" placeholder="username" value="<%= Witnesses %>">
+            <input style="width: 230px" type="text" name="Witnesses" id="Witnesses" placeholder="username" value="<%= Witnesses %>">
             <button style="width: 135px" type="submit">Search</button>
         </form>
     </div>
@@ -25,7 +21,6 @@
             <button class="exit-btn" type="submit">Exit</button>
         </div>
     </form>
-
 </div>
 
 <table>
@@ -35,8 +30,8 @@
             <th>Time</th>
             <th>Identification</th>
             <th>Location</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
+<!--            <th>Latitude</th>-->
+<!--            <th>Longitude</th>-->
             <th>User</th>
         </tr>
     <tbody>
@@ -48,8 +43,8 @@
                <td><%=birds[i].Time%></td>
                <td><%=birds[i].Identification%></td>
                <td><%=birds[i].location%></td>
-               <td><%=birds[i].latitude%></td>
-               <td><%=birds[i].longitude%></td>
+<!--               <td><%=birds[i].latitude%></td>-->
+<!--               <td><%=birds[i].longitude%></td>-->
                <td><%=birds[i].Witnesses%></td>
         </tr>
     <% } %>

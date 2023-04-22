@@ -13,9 +13,10 @@ function login(req, res) {
                 success: false,
                 message: 'Username are required fields',
             });
+        }else{
+            req.session.nickname = nickname;
+            res.redirect('/sighting/fetchSightingWithPage');
         }
-        req.session.nickname = nickname;
-        res.redirect('/sighting/fetchSightingWithPage');
     } catch (err) {
         // If there's an error, return an error message and log the error to the console
         console.error(err);

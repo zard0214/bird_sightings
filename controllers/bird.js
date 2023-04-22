@@ -32,7 +32,7 @@ const fetchSightingWithPage = async (req, res, next) => {
         .then((doc) => {
             const birds = doc
             res.render('sighting_page', {
-                nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,
+                title: 'Bird Sightings List', nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,
             });
         });
 };

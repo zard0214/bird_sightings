@@ -12,6 +12,7 @@ var app = express();
 
 // swagger api
 var swaggerInstall = require('./util/swagger')
+const {error} = require("swagger-node-express");
 swaggerInstall(app)
 
 // view engine setup
@@ -36,7 +37,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error han
+// error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -44,7 +45,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  if(err.status === 404)
+    res.render('error', {status: err.status, message: 'Page Not Found'});
+  else
+    res.render('error', {status: err.status, message: 'Page Not Found'});
 });
 
 
