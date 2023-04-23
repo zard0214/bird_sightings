@@ -18,7 +18,7 @@
         <form action="/sighting/fetchSightingWithPage" method="GET">
             <input style="width: 230px" type="datetime-local" name="startTime" id="startTime" >
             <input style="width: 230px" type="datetime-local" name="endTime" id="endTime">
-            <input style="width: 230px" type="text" name="Witnesses" id="Witnesses" placeholder="username" value="<%= Witnesses %>">
+            <input style="width: 230px" type="text" name="witnesses" id="witnesses" placeholder="username" value="<%= witnesses %>">
             <button style="width: 135px" type="submit">Search</button>
         </form>
     </div>
@@ -36,8 +36,6 @@
             <th>Time</th>
             <th>Identification</th>
             <th>Location</th>
-<!--            <th>Latitude</th>-->
-<!--            <th>Longitude</th>-->
             <th>User</th>
         </tr>
     <tbody>
@@ -46,12 +44,10 @@
        <% for (var i = 0; i < birds.length; i++) { %>
            <tr>
                <td><%= id + i + 1 %></td>
-               <td><%=birds[i].Time%></td>
-               <td><%=birds[i].Identification%></td>
+               <td><%=birds[i].time%></td>
+               <td><%=birds[i].identification%></td>
                <td><%=birds[i].location%></td>
-<!--               <td><%=birds[i].latitude%></td>-->
-<!--               <td><%=birds[i].longitude%></td>-->
-               <td><%=birds[i].Witnesses%></td>
+               <td><%=birds[i].witnesses%></td>
         </tr>
     <% } %>
     </tbody>

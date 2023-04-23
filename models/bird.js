@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
-const config = require('../config/default');
+const config = require('../config/default.js');
 
 mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
-const birdSchema = new mongoose.Schema({
-    Time: String,
-    Identification: String,
+const Schema = mongoose.Schema;
+
+
+const birdSchema = new Schema({
+    time: Date,
+    identification: String,
     location: String,
     latitude: Number,
     longitude: Number,
-    Witnesses: {
+    witnesses: {
         type: String,
         ref: 'users'
     }
@@ -77,6 +80,16 @@ birdSchema.static.findRecordById =
         });
     };
 
-const Bird = mongoose.model('birds', birdSchema);
-
+const Bird = mongoose.model('birds_record', birdSchema);
+// for (let i = 1; i <= 29; i++) {
+//     const bird = new Bird({
+//         time: new Date(),
+//         identification:'woodpecker',
+//         location: 'Central Park',
+//         latitude: i,
+//         longitude: i,
+//         witnesses: "alu" + i,
+//     });
+//     bird.save();
+// }
 module.exports = Bird;

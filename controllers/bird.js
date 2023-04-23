@@ -53,6 +53,13 @@ const fetchRecords = async (req, res, next) => {
         }
         if (bodyKey === 'startTime' || bodyKey === 'endTime') {
             // body.
+            // delete body[bodyKey];
+            if(bodyKey === 'startTime') {
+                // body.query().set('time', '$gt: ' + body[bodyKey])
+            }
+            if(bodyKey === 'endTime') {
+                // body.query().set('time', '$lt: ' + body[bodyKey])
+            }
             delete body[bodyKey];
         }
         console.log('bodyKey: ' + bodyKey)
@@ -69,7 +76,7 @@ const fetchRecords = async (req, res, next) => {
         .then((doc) => {
             const birds = doc
             res.render('index', {
-                    title:'Records', menuId:'home', nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,
+                    title:'Records', menuId:'home', nickname: nickname, birds: birds, page: pageNum, total: total, witnesses: body.witnesses,
             });
         });
 };
