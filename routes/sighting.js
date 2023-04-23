@@ -7,14 +7,14 @@ const Bird = require('../controllers/bird');
  * /login:
  *    get:
  *      tags:
- *      - recordPage
- *      summary: /sighting/recordPage
+ *      - fetchSightingWithPage
+ *      summary: /sighting/fetchSightingWithPage
  *      produces:
  *      - application/json
  *      parameters:
- *      - Witnesses: Witnesses
+ *      - Witnesses: witnesses
  *        in: query
- *        description: Witnesses username
+ *        description: witnesses username
  *        required: false
  *        type: integer
  *        maximum:
