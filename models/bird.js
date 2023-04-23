@@ -5,7 +5,6 @@ mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
 const Schema = mongoose.Schema;
 
-
 const birdSchema = new Schema({
     time: Date,
     identification: String,
