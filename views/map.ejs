@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>英文地图</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div id="container"></div>
+<script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=92b9bc7ad2a19cc70f2fa39a446abf12"></script>
+<script>
+    //初始化地图
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        center: [ -0.1278,51.5074],
+        lang: "en" //设置为英文
+    });
+</script>
+</body>
+
+</html>
+

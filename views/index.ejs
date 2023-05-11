@@ -1,5 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    select {
+        font-size: 14px;
+        height: 30px;
+        color: #333;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: none;
+        transition: border-color 0.3s ease;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: orange;
+    }
+    button {
+        border-radius: 30px;
+        background: white;
+        border-color: orange;
+
+    }
+    button:active {
+        background-color: #555;
+    }
+    input:focus{
+        outline: none;
+        border-color: orange;
+    }
+    table {
+        border-collapse: collapse;
+    }
+
+
+
+    th {
+        background-color: orange;
+        color: white;
+    }
+
+
+
+</style>
+
 <head>
     <%- include('includes/head.ejs') %>
 </head>
@@ -10,20 +54,41 @@
     <h3><%= title %></h3><br>
     <div class="container">
         <div class="search-container">
-            <form action="/record" method="GET">
-                <input style="width: 230px" type="datetime-local" name="startTime" id="startTime" >
-                <input style="width: 230px" type="datetime-local" name="endTime" id="endTime">
-                <input style="width: 230px" type="text" name="witnesses" id="witnesses" placeholder="username" value="<%= witnesses %>">
+            <form action="/record/search" method="GET">
+                <input style="width: 220px;" type="datetime-local" name="startTime" id="startTime" >
+                <input style="width: 220px" type="datetime-local" name="endTime" id="endTime">
+                <input style="width: 220px;height:30px" type="text" id="myInput" name="input_field" placeholder="Enter identification or username">
+                <select name="identifier_type" >
+                    <option value="identification">identification</option>
+                    <option value="witnesses">witnesses</option>
+                </select>
+                <script>
+                    const startTimeInput = document.getElementById('startTime');
+                    const endTimeInput = document.getElementById('endTime');
+                    const myInput = document.getElementById('myInput');
+
+                    startTimeInput.addEventListener('input', function() {
+                        startTimeInput.style.borderColor = 'orange';
+                    });
+                    endTimeInput.addEventListener('input', function() {
+                        endTimeInput.style.borderColor = 'orange';
+                    });
+                    myInput.addEventListener('input', () => {
+                        myInput.style.borderColor="orange"
+                    });
+
+                </script>
                 <button style="width: 135px" type="submit">Search</button>
             </form>
         </div>
     </div>
-    <table class="table table-bordered" style="margin-top: 30px">
+    <table class="table table-bordered" style="margin-top: 30px;border:1px solid orange;">
         <thead>
         <tr><th style="text-align:center;">ID</th><th style="text-align:center;">Time</th><th style="text-align:center;">Identification</th><th style="text-align:center;">Location</th><th style="text-align:center;">User</th><th style="text-align:center;">Action</th></tr>
         </thead>
         <tbody>
         <tbody>
+
         <% var id = (page - 1 ) * 10; %>
         <% for (var i = 0; i < birds.length; i++) { %>
             <tr>
@@ -33,7 +98,7 @@
                 <td><%=birds[i].location%></td>
                 <td><%=birds[i].witnesses%></td>
                 <td><a href="/record/detail?_id=<%= birds[i]._id %>">
-                        <button class="btn-info">Detail</button></a>
+                        <button class="btn-info" style=" background:orange">Detail</button></a>
                 </td>
             </tr>
         <% } %>
@@ -45,10 +110,12 @@
 </div>
 
 <div class="container-fluid center" style="text-align:center;">
-    <ul class="pagination" style="display: inline-block;float: none;">
+    <ul class="pagination" style="display: inline-block;float: none; background-color: #FFA500; color: #fff;">
         <li><a href="/record?pageNum=<%-page < 2 ? 1 : parseInt(page) - 1 %>">&laquo;</a></li>
         <% for(var i = 1; i <= total; i ++) { %>
-            <li><a href="/record?pageNum=<%= i %>"><%= i %></a></li>
+            <li><a href="/record?pageNum=<%= i %>"><%= i %></a>
+            </li>
+
         <% } %>
         <li><a href="/record?pageNum=<%= page > parseInt(total) - 1 ? total : parseInt(page) + 1 %>">&raquo;</a></li>
     </ul>

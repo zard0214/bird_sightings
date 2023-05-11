@@ -1,66 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    select {
+        font-size: 14px;
+        height: 30px;
+        color: #333;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: none;
+        transition: border-color 0.3s ease;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: orange;
+    }
+    button {
+        border-radius: 30px;
+        background: white;
+        border-color: orange;
+    }
+    button:active {
+        background-color: #555;
+    }
+    input:focus{
+        outline: none;
+        border-color: orange;
+
+    }
+    th {
+        background-color: orange;
+        color: white;
+    }
+
+
+</style>
 
 <head>
-    <meta charset="UTF-8">
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/login.css'>
-    <link rel='stylesheet' href='/stylesheets/sightings.css'>
+    <%- include('includes/head.ejs') %>
 </head>
-
-    <header>
-    <h1>BIRD</h1>
-    </header>
-        <div class="user">Welcome, <%= nickname %></div>
 <body>
-<div class="container">
-    <div class="search-container">
-        <form action="/sighting/fetchSightingWithPage" method="GET">
-            <input style="width: 230px" type="datetime-local" name="startTime" id="startTime" >
-            <input style="width: 230px" type="datetime-local" name="endTime" id="endTime">
-            <input style="width: 230px" type="text" name="witnesses" id="witnesses" placeholder="username" value="<%= witnesses %>">
-            <button style="width: 135px" type="submit">Search</button>
-        </form>
-    </div>
-    <form action="/logout" method="POST" id="login_form">
-        <div class="exit-container">
-            <button class="exit-btn" type="submit">Exit</button>
+<%- include('includes/menu.ejs') %>
+
+<div class="container-fluid text-center">
+    <h3><%= title %></h3><br>
+    <div class="container">
+        <div class="search-container">
+            <form action="/record/search" method="GET">
+                <input style="width: 220px;" type="datetime-local" name="startTime" id="startTime" >
+                <input style="width: 220px" type="datetime-local" name="endTime" id="endTime">
+                <input style="width: 220px;height:30px" type="text" id="myInput" name="input_field" placeholder="Enter identification or username">
+                <select name="identifier_type" >
+                    <option value="identification">identification</option>
+                    <option value="witnesses">witnesses</option>
+                </select>
+                <script>
+                    const startTimeInput = document.getElementById('startTime');
+                    const endTimeInput = document.getElementById('endTime');
+                    const myInput = document.getElementById('myInput');
+
+                    startTimeInput.addEventListener('input', function() {
+                        startTimeInput.style.borderColor = 'orange';
+                    });
+                    endTimeInput.addEventListener('input', function() {
+                        endTimeInput.style.borderColor = 'orange';
+                    });
+                    myInput.addEventListener('input', () => {
+                        myInput.style.borderColor="orange"
+                    });
+
+                </script>
+                <button style="width: 135px" type="submit">Search</button>
+            </form>
         </div>
-    </form>
-</div>
+    </div>
+    <table class="table table-bordered" style="margin-top: 30px">
+        <thead>
+        <tr><th style="text-align:center;">ID</th><th style="text-align:center;">Time</th><th style="text-align:center;">Identification</th><th style="text-align:center;">Location</th><th style="text-align:center;">User</th><th style="text-align:center;">Action</th></tr>
+        </thead>
+        <tbody>
+        <tbody>
 
-<table>
-    <caption>Sightings List</caption>
-        <tr>
-            <th>ID</th>
-            <th>Time</th>
-            <th>Identification</th>
-            <th>Location</th>
-            <th>User</th>
-        </tr>
-    <tbody>
-
-       <% var id = (page - 1 ) * 10; %>
-       <% for (var i = 0; i < birds.length; i++) { %>
-           <tr>
-               <td><%= id + i + 1 %></td>
-               <td><%=birds[i].time%></td>
-               <td><%=birds[i].identification%></td>
-               <td><%=birds[i].location%></td>
-               <td><%=birds[i].witnesses%></td>
-        </tr>
-    <% } %>
-    </tbody>
-
-
-</table>
-<div class="center">
-    <ul class="pagination">
-        <% for(var i=1; i<=total; i++) { %>
-            <li><a href="/sighting/fetchSightingWithPage?pageNum=<%= i %>"><%= i %></a></li>
+        <% var id = (page - 1 ) * 10; %>
+        <% for (var i = 0; i < birds.length; i++) { %>
+            <tr>
+                <td><%= id + i + 1 %></td>
+                <td><%=birds[i].time%></td>
+                <td><%=birds[i].identification%></td>
+                <td><%=birds[i].location%></td>
+                <td><%=birds[i].witnesses%></td>
+                <td><a href="/record/detail?_id=<%= birds[i]._id %>">
+                        <button class="btn-info" style=" background:orange">Detail</button></a>
+                </td>
+            </tr>
         <% } %>
+        </tbody>
+        </tbody>
+
+
+    </table>
+</div>
+<div class="container-fluid center" style="text-align:center;">
+    <ul class="pagination" style="display: inline-block;float: none;">
+        <li><a href="/record/search?startTime=<%-startTime%>&endTime=<%-endTime%>&input_field=<%-input_field%>&identifier_type=<%-identifier_type%>&pageNum=<%-page < 2 ? 1 : parseInt(page) - 1 %>">&laquo;</a></li>
+        <% for(var i = 1; i <= total; i ++) { %>
+            <li><a href="/record/search?startTime=<%-startTime%>&endTime=<%-endTime%>&input_field=<%-input_field%>&identifier_type=<%-identifier_type%>&pageNum=<%= i %>"><%= i %></a></li>
+        <% } %>
+        <li><a href="/record/search?startTime=<%-startTime%>&endTime=<%-endTime%>&input_field=<%-input_field%>&identifier_type=<%-identifier_type%>&pageNum=<%= page > parseInt(total) - 1 ? total : parseInt(page) + 1 %>">&raquo;</a></li>
     </ul>
 </div>
-
 </body>
+<footer class="text-muted bg-indigo" id="footer">
+    <%- include('includes/footer.ejs') %>
+</footer>
+<%- include('includes/script.ejs') %>
 </html>

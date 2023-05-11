@@ -11,11 +11,12 @@ const birdSchema = new Schema({
     location: String,
     latitude: Number,
     longitude: Number,
+    picture: String,
+    description: String,
     witnesses: {
         type: String,
         ref: 'users'
     }
-
 }, {
     timestamps: true
 });
@@ -38,17 +39,17 @@ birdSchema.static.fetchSightingWithPage =
     function(findArgs = {},
              pageNum = 1,
              pageSize = 10) {
-        console.log('findArgs: ' + findArgs)
-        console.log('pageNum: ' + pageNum)
-        console.log('pageSize: ' + pageSize)
+        // console.log('findArgs: ' + findArgs)
+        // console.log('pageNum: ' + pageNum)
+        // console.log('pageSize: ' + pageSize)
         // if(findArgs === undefined || findArgs.)
         for (const bodyKey in findArgs) {
-            console.log('findArgs: ' + bodyKey)
-            console.log('findArgs[bodyKey]: ' + findArgs[bodyKey])
+            console.log('findArgs11: ' + bodyKey)
+            console.log('findArgs[bodyKey]22: ' + findArgs[bodyKey])
         }
         return new Promise(async (resolve, reject) => {
             const skipNum = (pageNum - 1) * pageSize;
-            console.log('skipNum: ' + skipNum)
+            // console.log('skipNum: ' + skipNum)
             await Bird.find(findArgs)
                 // .sort({updateTime: -1})
                 .limit(pageSize)
@@ -83,11 +84,11 @@ const Bird = mongoose.model('birds_record', birdSchema);
 // for (let i = 1; i <= 29; i++) {
 //     const bird = new Bird({
 //         time: new Date(),
-//         identification:'woodpecker',
+//         identification:'unknown',
 //         location: 'Central Park',
 //         latitude: i,
 //         longitude: i,
-//         witnesses: "alu" + i,
+//         witnesses: "jie" + i,
 //     });
 //     bird.save();
 // }

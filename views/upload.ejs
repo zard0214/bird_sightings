@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('includes/head.ejs') %>
+    <link rel='stylesheet' href='/stylesheets/upload.css'>
+</head>
+    <body>
+<%- include('includes/menu.ejs') %>
+<div class="main">
+    <div class="title">
+    <h3><%= title %></h3><br>
+    </div>
+    <form class="form-container" action="/record/upload/add" method="post" enctype="multipart/form-data">
+        <div class="all_box">
+            <div class="upload_box">
+                <label>Upload a picture</label>
+                <div class="container_picture">
+                    <div id="upload">
+                        <label for="file" >
+                            <img src="/image/upload.png">
+                        </label>
+                        <input type="file" id="file" name="picture" style="display:none">
+                    </div>
+                    <div class="pre">
+                        <img class="img-thumbnail" src=""id="preview"  style="justify-content: center;text-align: center">
+                    </div>
+                </div>
+                <div id="upload_success"></div>
+                <script>
+                    document.getElementById("upload").style.display = "none";
+                </script>
+            </div>
+
+            <div class="location_box">
+                <div class="form-group_location">
+                    <label>Location</label>
+                    <input type="text" id="location-input" class="form-control" name="location" placeholder="Please enter the bird's location">
+                    <button type="button" onclick="getLocation()">Get Current Location</button>
+                </div>
+                <script>
+                    function getLocation() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(showPosition);
+                        } else {
+                            alert("Geolocation is not supported by this browser.");
+                        }
+                    }
+
+                    function showPosition(position) {
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
+                        document.getElementById("location-input").value = latitude + "," + longitude;
+                    }
+                </script>
+            </div>
+            <div class="description_box">
+                <div class="form-group_de">
+                    <label>Description</label>
+                    <textarea class="form-control" rows="6" name="description" placeholder="Please enter your description"></textarea>
+                </div>
+            </div>
+        <div class="identification-time_box">
+            <div class="form-group_ind">
+            <label>IDENTIFICATION</label>
+            <input type="text" class="form-control" name="identification" placeholder="Please enter the bird's identification">
+            </div>
+            <div class="form-group_tim">
+                <label>Time</label>
+                <input type="datetime-local" id="time" name="time" value=""><br><br>
+                <button type="button" onclick="getCurrentTime()">Get Current Time</button>
+            </div>
+        </div>
+
+    </div>
+       <div>
+        <button type="submit">UPLOAD</button>
+        </div>
+    </form>
+</div>
+    <script>
+        function getCurrentTime() {
+            var now = new Date();
+            var datetime = now.toISOString().slice(0,16);
+            document.getElementById("time").value = datetime;
+        }
+
+        var file=document.querySelector('#file');
+        var preview=document.querySelector('#preview')
+        file.onchange=function (){
+            var reader=new FileReader();
+            console.log(this.files[0])
+            reader.readAsDataURL(this.files[0]);
+            reader.onload=function (){
+                console.log(reader.result)
+                preview.src=reader.result
+            }
+        }
+    </script>
+
+
+    </body></html>
