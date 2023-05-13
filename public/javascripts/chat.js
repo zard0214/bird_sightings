@@ -2,7 +2,6 @@ let name = null;
 let roomNo = null;
 let socket = io();
 
-
 /**
  * called by <body onload>
  * it initialises the interface and the expected socket messages
@@ -27,7 +26,9 @@ function init() {
     socket.on('chat', function (room, userId, chatText) {
         let who = userId
         if (userId === name) who = 'Me';
+        // write on history
         writeOnHistory('<b style="padding: 15px">' + who + ':</b> ' + chatText);
+        writeHistory(room, userId, chatText);
     });
 
     connectToRoom();
@@ -73,6 +74,26 @@ function writeOnHistory(text) {
     paragraph.innerHTML = text;
     history.appendChild(paragraph);
     document.getElementById('chat_input').value = '';
+}
+
+function writeHistory(room, userId, chatText) {
+    var chatRecord =
+        { time: new Date(), chat_room: roomNo, user: userId, chat_text: chatText };
+    $.ajax({
+        type : 'POST',
+        url : "/chat/insert",
+        async : false,
+        data: chatRecord,
+        dataType : 'json',
+        success : function(data, status) {
+            // alert('success！');
+        },
+        complete : function() {
+        },
+        error : function(data, status, e) {
+            alert('error！');
+        }
+    });
 }
 
 /**

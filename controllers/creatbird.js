@@ -32,8 +32,8 @@ const uploadBird = (req, res) => {
                 return res.status(500).json({ error: 'Failed to create bird record' });
             }
 
-        });res.redirect('/record')
-
+        });
+        res.redirect('/record')
     });
 };
 

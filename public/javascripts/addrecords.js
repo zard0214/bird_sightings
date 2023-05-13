@@ -11,7 +11,7 @@ function addrecord() {
         var file = this.files;
         for(var i = 0; i < file.length; i++) {
             var curr = fileInput.files[0].size;
-            if(curr > allowImgFileSize * 101376) { //当图片大于1兆提示
+            if(curr > allowImgFileSize * 101376) {
                 layer.msg("The image file size exceeds the limit, please upload a file smaller than 99M");
             } else {
                 reads(file[i]);

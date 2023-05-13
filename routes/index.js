@@ -7,7 +7,6 @@ router.get('/', function(req, res, next) {
     Bird.fetchRecords(req, res);
 });
 router.get('/search', async (req, res) => {
-    console.log("kaishi")
     Bird.searchRecords(req, res);
 });
 
