@@ -83,7 +83,6 @@
             var datetime = now.toISOString().slice(0,16);
             document.getElementById("time").value = datetime;
         }
-
         var file=document.querySelector('#file');
         var preview=document.querySelector('#preview')
         file.onchange=function (){
@@ -96,6 +95,9 @@
             }
         }
     </script>
-
-
-    </body></html>
+    </body>
+<footer class="text-muted bg-indigo" id="footer">
+    <%- include('includes/footer.ejs') %>
+</footer>
+<%- include('includes/script.ejs') %>
+</html>

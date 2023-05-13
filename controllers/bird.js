@@ -1,4 +1,5 @@
 const Bird = require('../models/bird');
+const {format} = require("morgan");
 
 const fetchSightingWithPage = async (req, res, next) => {
     const body = req.query;
@@ -96,8 +97,6 @@ const fetchRecords = async (req, res, next) => {
     console.log('body: ', body)
     console.log('pageNum',pageNum)
 
-
-
     await Bird.schema.static.fetchSightingWithPage(body, pageNum, pageSize)
         .then((doc) => {
             const birds = doc
@@ -108,7 +107,7 @@ const fetchRecords = async (req, res, next) => {
         });
 };
 
-const SearchRecords = async (req, res, next) => {
+const searchRecords = async (req, res, next) => {
     const body = req.query;
     const startTime = req.query.startTime;
     const endTime = req.query.endTime || new Date(8640000000000000);
@@ -177,13 +176,12 @@ const SearchRecords = async (req, res, next) => {
     //page Number
     let total = Math.ceil(count / pageSize);
 
-
-
-
     await Bird.schema.static.fetchSightingWithPage(body, pageNum, pageSize)
         .then((doc) => {
             console.log('aaaa',body)
             const birds = doc
+            // var timeStr =  format(doc.time, "dd-MM-yyyy hh:mm:ss");
+            // birds.timeStr = timeStr
             res.render('sighting_page', {
                 title:'Records', menuId:'home', nickname: nickname, birds: birds, page: pageNum || 1, total: total, witnesses: body.witnesses, identification:body.identification,
                 input_field:inputField, identifier_type:identifierType,startTime: startTime,endTime: endTime
@@ -210,6 +208,8 @@ const findRecordById = async (req, res, next) => {
     await Bird.schema.static.findRecordById(body)
         .then((doc) => {
             const bird = doc
+            var timeStr =  format(doc.time, "dd-MM-yyyy hh:mm:ss");
+            bird.timeStr = timeStr
             console.log('birdSchema.static.findRecordById: ' + doc)
             console.log('nickname: ' + nickname)
             res.render('detail', {
@@ -223,5 +223,5 @@ module.exports = {
     fetchSightingWithPage: fetchSightingWithPage,
     fetchRecords: fetchRecords,
     findRecordById: findRecordById,
-    SearchRecords:SearchRecords
+    searchRecords:searchRecords
 };

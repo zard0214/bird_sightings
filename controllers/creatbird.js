@@ -14,7 +14,6 @@ const uploadBird = (req, res) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ error: 'Failed to parse form data' });
-
         }
         Bird.create({
             time: fields.time,
@@ -27,7 +26,6 @@ const uploadBird = (req, res) => {
             witnesses: req.session.nickname,
 
         }
-
         , (err, bird) => {
             if (err) {
                 console.log(err);

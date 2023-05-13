@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 router.get('/search', async (req, res) => {
     console.log("kaishi")
-    Bird.SearchRecords(req, res);
+    Bird.searchRecords(req, res);
 });
 
 router.get('/detail', function(req, res, next) {

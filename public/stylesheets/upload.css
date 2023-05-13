@@ -11,6 +11,8 @@
 
 .upload_box,
 .location_box,
+.map_box,
+.picture_box,
 .identification-time_box {
     grid-column: span 1;
     padding: 20px;
