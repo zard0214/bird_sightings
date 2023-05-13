@@ -39,11 +39,11 @@
                         </div>
                         <div id="chat_interface" style="display: none">
                             <div style="padding: 15px;text-align:center;">
-                                <h4> Room: <div id="in_room" style="display: inline"></div></h4>
+                                <div id="who_you_are" style="display: none" value="<%= nickname %>"></div>, <h4> Room: <div id="in_room" style="display: inline"></div></h4>
                             </div>
                             <div id="history" class="boxed"></div>
                             <div id="input" class="bottom boxed">
-                                <form onsubmit="return false;" style="width: 100%">
+                                <form id= "chatForm" onsubmit="return false;" style="width: 100%">
                                     <p>
                                         <label for="name"> Chat: </label>
                                         <input type="text" id="chat_input" name="chat_input" style="width: 80%">

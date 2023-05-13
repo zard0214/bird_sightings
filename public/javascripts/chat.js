@@ -8,19 +8,25 @@ let socket = io();
  * plus the associated actions
  */
 function init() {
+    console.log("chat init")
     // it sets up the interface so that userId and room are selected
     document.getElementById('initial_form').style.display = 'block';
     document.getElementById('chat_interface').style.display = 'none';
 
     // called when someone joins the room. If it is someone else it notifies the joining of the room
     socket.on('joined', function (room, userId) {
+        console.log("joined")
         if (userId === name) {
             // it enters the chat
+            // console.log("hideLoginInterface")
             hideLoginInterface(room, userId);
+            // console.log("writeChatHistory")
+            writeChatHistory(room, userId);
         } else {
             // notifies that someone has joined the room
             writeOnHistory('<b style="padding: 15px">'+userId+'</b>' + ' joined room ' + room);
         }
+
     });
     // called when a message is received
     socket.on('chat', function (room, userId, chatText) {
@@ -53,6 +59,16 @@ function sendChatText() {
     socket.emit('chat', roomNo, name, chatText);
 }
 
+// function validateForm()
+// {
+//     var chatText = document.forms["chatForm"]["chat_input"].value;
+//     if (chatText == null || chatText == "")
+//     {
+//         alert("Please input the word");
+//         return false;
+//     }
+// }
+
 /**
  * used to connect to a room. It gets the user name and room number from the
  * interface
@@ -74,6 +90,42 @@ function writeOnHistory(text) {
     paragraph.innerHTML = text;
     history.appendChild(paragraph);
     document.getElementById('chat_input').value = '';
+}
+
+function writeChatHistory(room, userId) {
+    console.log("writeChatHistory")
+    $.ajax({
+        type : 'GET',
+        url : "/chat/fetchChatRecordList",
+        async : false,
+        dataType : 'json',
+        headers: {
+            "content-type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            "chat_room": room
+        },
+        success : function(data, status) {
+            console.log("data:" + data)
+            var who =''
+            var chat_text =''
+            for (let i = 0; i < data.chat.length; i++) {
+                // console.log("record:" + data.chat[i]._id)
+                // console.log("user:" + data.chat[i].user)
+                // console.log("chat_text:" + data.chat[i].chat_text)
+                if (userId === name) who = 'Me';
+                else
+                    who =  data.chat[i].user;
+                chat_text = data.chat[i].chat_text;
+                writeOnHistory('<b style="padding: 15px">' + who + ':</b> ' + chat_text);
+            }
+        },
+        complete : function() {
+        },
+        error : function(data, status, e) {
+            alert('error！');
+        }
+    });
 }
 
 function writeHistory(room, userId, chatText) {
@@ -106,4 +158,6 @@ function hideLoginInterface(room, userId) {
     document.getElementById('chat_interface').style.display = 'block';
     document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' ' + room;
+
+    console.log("userId:", userId)
 }

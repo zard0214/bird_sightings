@@ -6,4 +6,8 @@ router.post('/insert', async (req, res) => {
     Chat.insert(req, res);
 });
 
+router.get('/fetchChatRecordList', async (req, res) => {
+    Chat.fetchChatRecordList(req, res);
+});
+
 module.exports = router;

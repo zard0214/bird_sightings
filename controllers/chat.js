@@ -14,6 +14,17 @@ const insert = async (req, res, next) => {
     res.status(200).json({ message: 'success' });
 };
 
+const fetchChatRecordList = async (req, res, next) => {
+    const body = req.query;
+    console.log("body ", body)
+    await Chat.schema.static.fetchChatRecordList(body)
+        .then((doc) => {
+            const chat = doc
+            res.status(200).json({ chat: chat });
+        });
+};
+
 module.exports = {
-    insert: insert
+    insert: insert,
+    fetchChatRecordList: fetchChatRecordList
 };
