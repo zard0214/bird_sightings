@@ -3,10 +3,10 @@
 
 ```bash
 # clone the project
-git clone git@github.com:zard0214/bird_watching.git
+git clone git@github.com:zard0214/bird_sightings.git
 
 # enter the project directory
-cd bird_watching
+cd bird_sightings
 
 # install dependency
 npm install

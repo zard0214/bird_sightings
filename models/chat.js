@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const config = require('../config/default.js');
-const Bird = require("./bird");
 
 mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
