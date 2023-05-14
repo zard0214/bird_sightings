@@ -92,16 +92,47 @@
             var file = document.querySelector('#file');
             var preview = document.querySelector('#preview')
             file.onchange = function() {
-                var reader = new FileReader();
-                console.log(this.files[0])
-                reader.readAsDataURL(this.files[0]);
-                reader.onload = function() {
-                    console.log(reader.result)
-                    preview.src = reader.result
-                }
-            }
+                    var reader = new FileReader();
+                    console.log(this.files[0])
+                    reader.readAsDataURL(this.files[0]);
+                    reader.onload = function() {
+                            console.log(reader.result)
+                            preview.src = reader.result
+                        } <
+                        /div> <
+                        div >
+                        <
+                        button type = "submit" > UPLOAD < /button> <
+                        /div> <
+                        /form> <
+                        /div> <
+                        script >
+                        function getCurrentTime() {
+                            var now = new Date();
+                            var datetime = now.toISOString().slice(0, 16);
+                            document.getElementById("time").value = datetime;
+                        }
+                    var file = document.querySelector('#file');
+                    var preview = document.querySelector('#preview')
+                    file.onchange = function() {
+                            var reader = new FileReader();
+                            console.log(this.files[0])
+                            reader.readAsDataURL(this.files[0]);
+                            reader.onload = function() {
+                                console.log(reader.result)
+                                preview.src = reader.result
+                            }
         </script>
 
+        }
+        </script>
+</body>
+<footer class="text-muted bg-indigo" id="footer">
+    <%- include('includes/footer.ejs') %>
+</footer>
+<%- include('includes/script.ejs') %>
+
+</html>
 
 </body>
 

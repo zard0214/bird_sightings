@@ -39,10 +39,6 @@ birdSchema.static.fetchSightingWithPage =
     function(findArgs = {},
              pageNum = 1,
              pageSize = 10) {
-        // console.log('findArgs: ' + findArgs)
-        // console.log('pageNum: ' + pageNum)
-        // console.log('pageSize: ' + pageSize)
-        // if(findArgs === undefined || findArgs.)
         for (const bodyKey in findArgs) {
             console.log('findArgs11: ' + bodyKey)
             console.log('findArgs[bodyKey]22: ' + findArgs[bodyKey])
