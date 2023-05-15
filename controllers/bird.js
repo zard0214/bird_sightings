@@ -189,8 +189,6 @@ const searchRecords = async (req, res, next) => {
         });
 };
 
-
-
 const findRecordById = async (req, res, next) => {
     const body = req.query;
     let nickname = req.session.nickname

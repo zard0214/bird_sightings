@@ -1,5 +1,5 @@
 {
-    "name": "bird_watching",
+    "name": "bird_sightings",
     "version": "1.0.0",
     "description": "",
     "main": "login.js",
@@ -26,6 +26,7 @@
         "jquery": "^3.6.4",
         "leaflet": "^1.9.3",
         "minimist": "*",
+        "moment": "^2.29.4",
         "mongoose": "^5.0.11",
         "morgan": "~1.9.1",
         "node-fetch": "^2.6.1",

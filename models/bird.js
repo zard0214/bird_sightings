@@ -1,12 +1,18 @@
 const mongoose = require('mongoose');
 const config = require('../config/default.js');
+const moment = require('moment');
 
 mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
 const Schema = mongoose.Schema;
 
 const birdSchema = new Schema({
-    time: Date,
+    //time: Date,
+    time: {
+        type: Date,
+        default: Date.now,
+        get: v => moment(v).format('DD-MM-YYYY HH:mm:ss')
+    },
     identification: String,
     location: String,
     latitude: String,
