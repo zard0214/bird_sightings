@@ -7,6 +7,8 @@
 </head>
 
 <body>
+
+
     <%- include('includes/menu.ejs') %>
         <div class="main">
             <div class="title">
@@ -30,50 +32,33 @@
                             </div>
                         </div>
                         <div id="upload_success"></div>
-                        <script>
-                            document.getElementById("upload").style.display = "none";
-                        </script>
                     </div>
 
                     <div class="location_box">
                         <div class="form-group_location">
                             <label>Location</label>
-                            <input type="text" id="location-input" class="form-control" name="location" placeholder="Please enter the bird's location">
-                            <button type="button" onclick="getLocation()">Get Current Location</button>
+                            <input type="text" id="location_input" class="form-control" name="location" placeholder="Please enter the bird's location">
+                            <button type="button" id="location_button_click">Get Current Location</button>
                         </div>
-                        <script>
-                            function getLocation() {
-                                if (navigator.geolocation) {
-                                    navigator.geolocation.getCurrentPosition(showPosition);
-                                } else {
-                                    alert("Geolocation is not supported by this browser.");
-                                }
-                            }
 
-                            function showPosition(position) {
-                                var latitude = position.coords.latitude;
-                                var longitude = position.coords.longitude;
-                                document.getElementById("location-input").value = latitude + "," + longitude;
-                            }
-                        </script>
                     </div>
-                    <div class="description_box">
+                    <div class=" description_box">
                         <div class="form-group_de">
                             <label>Description</label>
-                            <textarea class="form-control" rows="6" name="description" placeholder="Please enter your description"></textarea>
+                            <textarea class="form-control" id="description" rows="6" name="description" placeholder="Please enter your description"></textarea>
+
                         </div>
                     </div>
                     <div class="identification-time_box">
+                        <!--  -->
+                        <div class="form-group_tim ">
+                            <label>Time</label>
+                            <input type="datetime-local " id="time" name="time" value=" "><br>
+                            <button type="button" id="time_button_click">Get Current Time</button><br><br>
+                        </div>
                         <div class="form-group_ind">
                             <label>IDENTIFICATION</label>
-                            <input type="text" class="form-control" name="identification" placeholder="Please enter the bird's identification">
-                        </div>
-
-                        <!--  -->
-                        <div class="form-group_tim">
-                            <label>Time</label>
-                            <input type="datetime-local" id="time" name="time" value=""><br><br>
-                            <button type="button" onclick="getCurrentTime()">Get Current Time</button>
+                            <input type="text" class="form-control" id="identidication" name="identidication" placeholder=" Please enter the bird 's identification">
                         </div>
                     </div>
 
@@ -84,26 +69,101 @@
             </form>
         </div>
         <script>
+            var file = document.querySelector('#file ');
+            var preview = document.querySelector('#preview ');
+            file.onchange = function() {
+                    var reader = new FileReader();
+                    console.log(this.files[0])
+                    reader.readAsDataURL(this.files[0]);
+                    reader.onload = function() {
+                        console.log(reader.result)
+                        preview.src = reader.result
+                    }
+                }
+                //document.getElementById("upload ").style.display = "none ";
+
             function getCurrentTime() {
                 var now = new Date();
                 var datetime = now.toISOString().slice(0, 16);
                 document.getElementById("time").value = datetime;
             }
 
-            var file = document.querySelector('#file');
-            var preview = document.querySelector('#preview')
-            file.onchange = function() {
-                var reader = new FileReader();
-                console.log(this.files[0])
-                reader.readAsDataURL(this.files[0]);
-                reader.onload = function() {
-                    console.log(reader.result)
-                    preview.src = reader.result
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    alert("Geolocation is not supported by this browser.");
                 }
             }
+
+            function showPosition(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                document.getElementById("location_input").value = latitude + "," + longitude;
+            }
+
+            function checkInputFilledById(e) {
+                console.log(e);
+                //const input = document.getElementById(id);
+                //if (input) {
+                //    if (input.isEmpty()) {
+                //        console.log("Please fill the fields ")
+                //    } else {
+                //         console.log("all are fi the fields ")
+                //    }
+                // }
+                //return false;
+            }
+
+            const location_button = document.getElementById("location_button_click");
+            location_button.addEventListener("click", getLocation);
+
+            const time_button = document.getElementById("time_button_click");
+            time_button.addEventListener("click", getCurrentTime);
+
+            const description = document.getElementById("description");
+            description.addEventListener("input", checkInputFilledById);
+            console.log(description);
+
+            const listen_location = document.getElementById("location_input");
+            listen_location.addEventListener("input", checkInputFilledById);
+            console.log(listen_location);
+
+            const time = document.getElementById("time");
+            time.addEventListener("input", checkInputFilledById);
+            console.log(time);
         </script>
+        <script type="text/javascript" src="../controllers/identifier.js">
+            function checkEventListeners(id1, id2, id3) {
+                let el1 = document.getElementById(id1);
+                let el2 = document.getElementById(id2);
+                let el3 = document.getElementById(id3);
 
+                if (el1.value.length == 0 && el2.value.length == 0 && el3.value.length == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            let result = checkEventListeners('description', 'listen_location', 'time');
+            if (result) {
+                const dateTime = document.querySelector('time').value;
+                const description = document.querySelector('description ').value;
+                const photo = document.querySelector('picture').value;
+                const location = document.querySelector('location').value;
+                //const latitude = document.querySelector('#latitude ').value;
+                //const location = {
+                //    type: 'Point ',
+                //    coordinates: [longitude, latitude]
+                //};
 
+                const query = saveBirdSighting(dateTime, description, photo, location);
+                //document.getElementById("time_button_click") = query;
+                console.log('At least one input field has an event listener for "input " events. ', query);
+                //} else {
+                //    console.log('None of the input fields have an event listener for input events. ');
+            }
+        </script>
 </body>
 
 </html>

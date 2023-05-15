@@ -1,18 +1,15 @@
-const BirdSighting = require('../models/birdSighting');
+const BirdSighting = require('../models/bird');
 const SparqlClient = require('sparql-client-2');
 const endpointUrl = 'http://dbpedia.org/sparql';
-
-// Handle POST request to search for bird species
-exports.searchBirdSpecies = (req, res) => {
-    const dateTime = document.getElementById('dateTime').value;
-    const description = document.getElementById('description').value;
-    const photo = document.getElementById('photo').value;
-    const latitude = document.getElementById('location').value;
-    const longitude = document.getElementById('longitude').value;
+// Define function to search for bird species and create new bird sighting document
 
 
+function saveBirdSighting(req, res) {
+
+    // Get the parameters from the request body or query string
+    const { dateTime, description, photo, location } = req.body;
     // Construct SPARQL query to search for bird species
-    const query = `
+    const birdQuery = `
     PREFIX dbo: <http://dbpedia.org/ontology/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
@@ -23,22 +20,23 @@ exports.searchBirdSpecies = (req, res) => {
               dbo:abstract ?description ;
               foaf:depiction ?image ;
               dbo:wikiPageExternalLink ?dbpediaLink .
-        FILTER(regex(?name, "${bird.description}", "i"))
+        FILTER(regex(?name, "${description}", "i"))
         FILTER(langMatches(lang(?description), "en"))
-        FILTER(regex(?image, "${bird.photo}", "i"))
-        FILTER(?lat - ${bird.location.coordinates[0]} < 0.01 && ${bird.location.coordinates[0]} - ?lat < 0.01)
-        FILTER(?long - ${bird.location.coordinates[1]} < 0.01 && ${bird.location.coordinates[1]} - ?long < 0.01)
+        FILTER(regex(?image, "${photo}", "i"))
+        FILTER(?lat - ${location.coordinates[0]} < 0.01 && ${location.coordinates[0]} - ?lat < 0.01)
+        FILTER(?long - ${location.coordinates[1]} < 0.01 && ${location.coordinates[1]} - ?long < 0.01)
       }
       LIMIT 1
-    `;
+  `;
+
 
     // Execute SPARQL query
     const client = new SparqlClient(endpointUrl);
-    client.query(query).execute((error, results) => {
+    client.query(birdQuery).execute((error, results) => {
         if (error) {
             // Handle error
             console.error(error);
-            res.status(500).send('An error occurred');
+            throw new Error('An error occurred');
         } else {
             const species = results.results.bindings[0].species.value;
             const commonName = results.results.bindings[0].commonName.value;
@@ -51,7 +49,7 @@ exports.searchBirdSpecies = (req, res) => {
                 photo: photo,
                 location: {
                     type: 'Point',
-                    coordinates: [longitude, latitude]
+                    coordinates: [location.coordinates[1], location.coordinates[0]]
                 },
                 species: species,
                 commonName: commonName,
@@ -59,31 +57,16 @@ exports.searchBirdSpecies = (req, res) => {
             });
             birdSighting.save()
                 .then(() => {
-                    res.redirect('/sightings');
+                    console.log('Bird sighting saved to database');
                 })
                 .catch((error) => {
                     console.error(error);
-                    res.status(500).send('An error occurred');
+                    throw new Error('An error occurred');
                 });
         }
     });
-    // Execute the SPARQL query
-    store.execute(query, (err, results) => {
-        if (err) {
-            console.error(err);
-        } else {
-            const bindings = results.map(result => ({
-                speciesUri: result.speciesUri.value,
-                commonName: result.commonName.value
-            }));
-            console.log(bindings); // prints the results as an array of objects
-        }
-    });
-
-    // Execute SPARQL query and obtain bird species name
-    const birdSpecies = query;
-
-    // Render HTML file with bird species name embedded in placeholder element
-    res.render('bird-sighting-form', { birdSpecies });
-
+    res.send(birdQuery);
+}
+module.exports = {
+    saveBirdSighting
 };
