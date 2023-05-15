@@ -1,18 +1,12 @@
 const mongoose = require('mongoose');
 const config = require('../config/default.js');
-const moment = require('moment');
 
-mongoose.connect(config.mongodb , { useNewUrlParser: true })
+mongoose.connect(config.mongodb, { useNewUrlParser: true })
 
 const Schema = mongoose.Schema;
 
 const birdSchema = new Schema({
-    //time: Date,
-    time: {
-        type: Date,
-        default: Date.now,
-        get: v => moment(v).format('DD-MM-YYYY HH:mm:ss')
-    },
+    time: Date,
     identification: String,
     location: String,
     latitude: Number,
@@ -27,8 +21,8 @@ const birdSchema = new Schema({
     timestamps: true
 });
 
-birdSchema.static.totalCount = function (findArgs) {
-    return new Promise(async (resolve, reject) => {
+birdSchema.static.totalCount = function(findArgs) {
+    return new Promise(async(resolve, reject) => {
         await Bird.countDocuments(findArgs)
             .then((num) => {
                 console.log('num: ' + num)
@@ -43,13 +37,13 @@ birdSchema.static.totalCount = function (findArgs) {
 
 birdSchema.static.fetchSightingWithPage =
     function(findArgs = {},
-             pageNum = 1,
-             pageSize = 10) {
+        pageNum = 1,
+        pageSize = 10) {
         for (const bodyKey in findArgs) {
             console.log('findArgs11: ' + bodyKey)
             console.log('findArgs[bodyKey]22: ' + findArgs[bodyKey])
         }
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
             const skipNum = (pageNum - 1) * pageSize;
             // console.log('skipNum: ' + skipNum)
             await Bird.find(findArgs)
@@ -69,7 +63,7 @@ birdSchema.static.fetchSightingWithPage =
 
 birdSchema.static.findRecordById =
     function(findArgs = {}) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
             await Bird.find(findArgs)
                 .exec()
                 .then((doc) => {

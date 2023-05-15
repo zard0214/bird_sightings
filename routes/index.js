@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     Bird.fetchRecords(req, res);
 });
-router.get('/search', async (req, res) => {
+router.get('/search', async(req, res) => {
     Bird.searchRecords(req, res);
 });
 
@@ -19,7 +19,8 @@ router.get('/upload', (req, res) => {
 });
 
 router.get('/nearby', function(req, res, next) {
-    res.render('map', {title:'Nearby', menuId:'about'});
+    res.render('map', { title: 'Nearby', menuId: 'about' });
 });
+
 
 module.exports = router;
