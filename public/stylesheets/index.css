@@ -1,0 +1,35 @@
+select {
+    font-size: 14px;
+    height: 30px;
+    color: #333;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: none;
+    transition: border-color 0.3s ease;
+}
+
+select:focus {
+    outline: none;
+    border-color: orange;
+}
+button {
+    border-radius: 30px;
+    background: white;
+    border-color: orange;
+
+}
+button:active {
+    background-color: #555;
+}
+input:focus{
+    outline: none;
+    border-color: orange;
+}
+table {
+    border-collapse: collapse;
+}
+th {
+    background-color: orange;
+    color: white;
+}
