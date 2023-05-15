@@ -217,11 +217,29 @@ const findRecordById = async (req, res, next) => {
             });
         });
 };
+const findNearbyBirds = async (req, res, next) => {
+    try {
+        const birds = await Bird.find({}).limit(99999);
+        const birdData = birds.map(bird => ({
+            identification: bird.identification,
+            latitude: bird.latitude,
+            longitude: bird.longitude,
+            picture:bird.picture,
+             description:bird.description,
+        }));
+        // console.log(birdData);
+        res.render('map', { title: 'Nearby Birds', menuId: 'nearby', birds:birdData });
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+}
 
 
 module.exports = {
     fetchSightingWithPage: fetchSightingWithPage,
     fetchRecords: fetchRecords,
     findRecordById: findRecordById,
-    searchRecords:searchRecords
+    searchRecords:searchRecords,
+    findNearbyBirds: findNearbyBirds,
 };

@@ -30,15 +30,7 @@
 }
 
 
-upload_box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.upload_box label{
-    text-align: left;
 
-}
 
 .container_picture {
     display: flex;

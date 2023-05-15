@@ -9,8 +9,8 @@ const birdSchema = new Schema({
     time: Date,
     identification: String,
     location: String,
-    latitude: Number,
-    longitude: Number,
+    latitude: String,
+    longitude: String,
     picture: String,
     description: String,
     witnesses: {

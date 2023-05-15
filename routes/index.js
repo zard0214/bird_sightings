@@ -1,5 +1,6 @@
 var express = require('express');
 const Bird = require("../controllers/bird");
+const bird= require("../models/bird");
 
 var router = express.Router();
 
@@ -19,7 +20,7 @@ router.get('/upload', (req, res) => {
 });
 
 router.get('/nearby', function(req, res, next) {
-    res.render('map', {title:'Nearby', menuId:'about'});
+   Bird.findNearbyBirds(req,res);
 });
 
 module.exports = router;

@@ -32,10 +32,10 @@
             </div>
 
             <div class="location_box">
-                <div class="form-group_location">
+                <div class="form-group_location" style="position: relative;">
                     <label>Location</label>
                     <input type="text" id="location-input" class="form-control" name="location" placeholder="Please enter the bird's location">
-                    <button type="button" onclick="getLocation()">Get Current Location</button>
+                    <button type="button" onclick="getLocation()" style="position: absolute; bottom: -151px; right: 0;">Get Current Location</button>
                 </div>
                 <script>
                     function getLocation() {
@@ -53,6 +53,7 @@
                     }
                 </script>
             </div>
+
             <div class="description_box">
                 <div class="form-group_de">
                     <label>Description</label>
@@ -67,7 +68,7 @@
             <div class="form-group_tim">
                 <label>Time</label>
                 <input type="datetime-local" id="time" name="time" value=""><br><br>
-                <button type="button" onclick="getCurrentTime()">Get Current Time</button>
+                <button type="button" onclick="getCurrentTime()" style="text-align: right">Get Current Time</button>
             </div>
         </div>
 
