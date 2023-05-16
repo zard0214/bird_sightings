@@ -58,7 +58,8 @@
                         </div>
                         <div class="form-group_ind">
                             <label>IDENTIFICATION</label>
-                            <input type="text" class="form-control" id="identidication" name="identidication" placeholder=" Please enter the bird 's identification">
+                            <input type="text" class="form-control" id="identification" name="identification" placeholder=" Please enter the bird 's identification">
+                            <button type="button" id="identify_button_click">Get identification</button><br><br>
                         </div>
                     </div>
 
@@ -87,6 +88,8 @@
                 var datetime = now.toISOString().slice(0, 16);
                 document.getElementById("time").value = datetime;
             }
+
+
 
             function getLocation() {
                 if (navigator.geolocation) {
@@ -121,6 +124,9 @@
             const time_button = document.getElementById("time_button_click");
             time_button.addEventListener("click", getCurrentTime);
 
+            //const idedntify_button = document.getElementById("identify_button_click");
+            //time_button.addEventListener("click", getIdentification);
+
             const description = document.getElementById("description");
             description.addEventListener("input", checkInputFilledById);
             console.log(description);
@@ -133,54 +139,93 @@
             time.addEventListener("input", checkInputFilledById);
             console.log(time);
 
+            const identifyButton = document.getElementById("identify_button_click");
+            identifyButton.addEventListener("click", () => {
+                const description = document.getElementById("description").value;
+                const photo = document.getElementById("preview").src;
+                const location = document.getElementById("location_input").value;
+
+                if (photo && location && description) {
+                    const data = {
+                        description: description,
+                        photo: photo,
+                        location: location
+                    };
+                    fetch('/record/upload/identifier', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(response => response.json())
+                        .then(data => {
+                            if (data.code === 200) {
+                                console.log("Found bird URI:", data.data.birdURI);
+                                identification.value = data.data.birdURI;
+                            } else {
+                                identification.value = "NA";
+                                console.log("Bird not found on DBpedia.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching bird URI:", error);
+                        });
+                } else {
+                    console.log("Please enter both identification and description.");
+
+                }
+            });
+            // fetch("http://localhost:3001/record/upload/identifier", {
+            //     method: "POST",
+            //    body: JSON.stringify({
+            //        description,
+            //       listen_location
+            //   })
+            //).then(res => res.json())
+            //.then(data => {
+            //console.log(data);
+            //})
+
             function checkEventListeners(id1, id2, id3) {
                 let el1 = document.getElementById(id1);
                 let el2 = document.getElementById(id2);
                 let el3 = document.getElementById(id3);
 
-                if (el1.value.length == 0 && el2.value.length == 0 && el3.value.length == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-            let result = checkEventListeners('description', 'listen_location', 'time');
-            if (result) {
-                const dateTime = document.querySelector('#time').value;
-                const description = document.querySelector('#description ').value;
-                const photo = document.querySelector('#picture').value;
-                const location = document.querySelector('#location').value;
-                //const latitude = document.querySelector('#latitude ').value;
-                //const location = {
-                //    type: 'Point ',
-                //    coordinates: [longitude, latitude]
-                //};
-                fetch("http://localhost:3001/record/upload/identifier", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            dateTime,
-                            description,
-                            photo,
-                            location
-                        })
-                    }).then(res => res.json())
-                    .then(data => {
-                        console.log(data);
-                    })
-
-                //const query = saveBirdSighting({
-                //   body: {
-                //        dateTime: dateTime,
-                //       description: description,
-                //        photo: photo,
-                //        location: location
-                //    }
-                //});
-                //document.getElementById("time_button_click ") = query;
-                //console.log('At least one input field has an event listener for "input " events. ', query);
+                //if (el1.value.length == 0 && el2.value.length == 0 && el3.value.length == 0) {
+                //    return false;
                 //} else {
-                //    console.log('None of the input fields have an event listener for input events. ');
+                //    return true;
+                //}
             }
+
+
+            //let result = checkEventListeners('description', 'listen_location', 'time');
+            //if (true) {
+            //   const dateTime = document.querySelector('#time').value;
+            //   const description = document.querySelector('#description ').value;
+
+            //const photo = document.querySelector('#picture').value;
+            //const location = document.querySelector('#location').value;
+            //console.log(description, photo, location, dateTime);
+            //const latitude = document.querySelector('#latitude ').value;
+            //const location = {
+            //    type: 'Point ',
+            //    coordinates: [longitude, latitude]
+            //};
+
+            //const query = saveBirdSighting({
+            //   body: {
+            //        dateTime: dateTime,
+            //       description: description,
+            //        photo: photo,
+            //        location: location
+            //    }
+            //});
+            //document.getElementById("time_button_click ") = query;
+            //console.log('At least one input field has an event listener for "input " events. ', query);
+            //} else {
+            //    console.log('None of the input fields have an event listener for input events. ');
+            //}
         </script>
 </body>
 

@@ -1,87 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('includes/head.ejs') %>
-    <link rel='stylesheet' href='/stylesheets/index.css'>
+        <link rel='stylesheet' href='/stylesheets/index.css'>
 </head>
-<body>
-<%- include('includes/menu.ejs') %>
 
-<div class="container-fluid text-center">
-    <h3><%= title %></h3><br>
-    <div class="container">
-        <div class="search-container">
-            <form action="/record/search" method="GET">
-                <input style="width: 220px;" type="datetime-local" name="startTime" id="startTime" >
-                <input style="width: 220px" type="datetime-local" name="endTime" id="endTime">
-                <input style="width: 220px;height:30px" type="text" id="myInput" name="input_field" placeholder="Enter identification or username">
-                <select name="identifier_type" >
+<body>
+    <%- include('includes/menu.ejs') %>
+
+        <div class="container-fluid text-center">
+            <h3>
+                <%= title %>
+            </h3><br>
+            <div class="container">
+                <div class="search-container">
+                    <form action="/record/search" method="GET">
+                        <input style="width: 220px;" type="datetime-local" name="startTime" id="startTime">
+                        <input style="width: 220px" type="datetime-local" name="endTime" id="endTime">
+                        <input style="width: 220px;height:30px" type="text" id="myInput" name="input_field" placeholder="Enter identification or username">
+                        <select name="identifier_type">
                     <option value="identification">identification</option>
                     <option value="witnesses">witnesses</option>
                 </select>
-                <script>
-                    const startTimeInput = document.getElementById('startTime');
-                    const endTimeInput = document.getElementById('endTime');
-                    const myInput = document.getElementById('myInput');
+                        <script>
+                            const startTimeInput = document.getElementById('startTime');
+                            const endTimeInput = document.getElementById('endTime');
+                            const myInput = document.getElementById('myInput');
 
-                    startTimeInput.addEventListener('input', function() {
-                        startTimeInput.style.borderColor = 'orange';
-                    });
-                    endTimeInput.addEventListener('input', function() {
-                        endTimeInput.style.borderColor = 'orange';
-                    });
-                    myInput.addEventListener('input', () => {
-                        myInput.style.borderColor="orange"
-                    });
+                            startTimeInput.addEventListener('input', function() {
+                                startTimeInput.style.borderColor = 'orange';
+                            });
+                            endTimeInput.addEventListener('input', function() {
+                                endTimeInput.style.borderColor = 'orange';
+                            });
+                            myInput.addEventListener('input', () => {
+                                myInput.style.borderColor = "orange"
+                            });
+                        </script>
+                        <button style="width: 135px" type="submit">Search</button>
+                    </form>
+                    <td>
+                        <a href="/record/upload">
+                            <button class="btn-info" style=" background:orange; margin-top: 20px">Upload</button></a>
+                    </td>
 
-                </script>
-                <button style="width: 135px" type="submit">Search</button>
-            </form>
-            <td><a href="/record/upload">
-                    <button class="btn-info" style=" background:orange; margin-top: 20px">Upload</button></a>
-            </td>
+                </div>
+            </div>
+            <table class="table table-bordered" style="margin-top: 30px;border:1px solid orange;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">ID</th>
+                        <th style="text-align:center;">Time</th>
+                        <th style="text-align:center;">Identification</th>
+                        <th style="text-align:center;">Location</th>
+                        <th style="text-align:center;">User</th>
+                        <th style="text-align:center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tbody>
 
+                        <% var id = (page - 1 ) * 10; %>
+                            <% for (var i = 0; i < birds.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= id + i + 1 %>
+                                    </td>
+                                    <td>
+                                        <%=birds[i].time%>
+                                    </td>
+                                    <td>
+                                        <% if (birds[i].birdInfo && birds[i].birdInfo.scientificName) { %>
+                                            <%= query.birdInfo.scientificName %> %>
+                                                <% } else { %>
+                                                    N/A
+                                                    <% } %>
+                                    </td>
+                                    <td>
+                                        <%=birds[i].location%>
+                                    </td>
+                                    <td>
+                                        <%=birds[i].witnesses%>
+                                    </td>
+                                    <td>
+                                        <a href="/record/detail?_id=<%= birds[i]._id %>">
+                                            <button class="btn-info" style=" background:orange">Detail</button></a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                    </tbody>
+                </tbody>
+            </table>
         </div>
-    </div>
-    <table class="table table-bordered" style="margin-top: 30px;border:1px solid orange;">
-        <thead>
-        <tr><th style="text-align:center;">ID</th><th style="text-align:center;">Time</th><th style="text-align:center;">Identification</th><th style="text-align:center;">Location</th><th style="text-align:center;">User</th><th style="text-align:center;">Action</th></tr>
-        </thead>
-        <tbody>
-        <tbody>
 
-        <% var id = (page - 1 ) * 10; %>
-        <% for (var i = 0; i < birds.length; i++) { %>
-            <tr>
-                <td><%= id + i + 1 %></td>
-                <td><%=birds[i].time%></td>
-                <td><%=birds[i].identification%></td>
-                <td><%=birds[i].location%></td>
-                <td><%=birds[i].witnesses%></td>
-                <td><a href="/record/detail?_id=<%= birds[i]._id %>">
-                        <button class="btn-info" style=" background:orange">Detail</button></a>
-                </td>
-            </tr>
-        <% } %>
-        </tbody>
-        </tbody>
-    </table>
-</div>
+        <div class="container-fluid center" style="text-align:center;">
+            <ul class="pagination" style="display: inline-block;float: none; background-color: #FFA500; color: #fff;">
+                <li><a href="/record?pageNum=<%-page < 2 ? 1 : parseInt(page) - 1 %>">&laquo;</a></li>
+                <% for(var i = 1; i <= total; i ++) { %>
+                    <li>
+                        <a href="/record?pageNum=<%= i %>">
+                            <%= i %>
+                        </a>
+                    </li>
 
-<div class="container-fluid center" style="text-align:center;">
-    <ul class="pagination" style="display: inline-block;float: none; background-color: #FFA500; color: #fff;">
-        <li><a href="/record?pageNum=<%-page < 2 ? 1 : parseInt(page) - 1 %>">&laquo;</a></li>
-        <% for(var i = 1; i <= total; i ++) { %>
-            <li><a href="/record?pageNum=<%= i %>"><%= i %></a>
-            </li>
-
-        <% } %>
-        <li><a href="/record?pageNum=<%= page > parseInt(total) - 1 ? total : parseInt(page) + 1 %>">&raquo;</a></li>
-    </ul>
-</div>
+                    <% } %>
+                        <li><a href="/record?pageNum=<%= page > parseInt(total) - 1 ? total : parseInt(page) + 1 %>">&raquo;</a></li>
+            </ul>
+        </div>
 </body>
 <footer class="text-muted bg-indigo" id="footer">
     <%- include('includes/footer.ejs') %>
 </footer>
 <%- include('includes/script.ejs') %>
+
 </html>

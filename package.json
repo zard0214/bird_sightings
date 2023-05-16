@@ -34,6 +34,7 @@
         "osm": "^1.0.0",
         "serve-favicon": "~2.4.5",
         "socket.io": "^4.4.1",
+        "sparql-client-2": "^0.6.3",
         "swagger-jsdoc": "^6.2.8",
         "swagger-node-express": "^1.2.3",
         "swagger-ui-express": "^4.6.2"

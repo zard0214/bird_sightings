@@ -1,7 +1,7 @@
 const path = require('path');
 const formidable = require('formidable');
 const Bird = require('../models/bird');
-
+const fetch = require('node-fetch');
 
 const uploadBird = (req, res) => {
     const form = new formidable.IncomingForm();
@@ -35,6 +35,7 @@ const uploadBird = (req, res) => {
         res.redirect('/record')
     });
 };
+
 
 
 
