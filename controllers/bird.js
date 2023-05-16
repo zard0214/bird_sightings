@@ -211,7 +211,7 @@ const findRecordById = async (req, res, next) => {
             console.log('birdSchema.static.findRecordById: ' + doc)
             console.log('nickname: ' + nickname)
             res.render('detail', {
-                title:'Record Detail', menuId:'home', bird: bird, nickname: nickname,
+                title:' detail', menuId:'home', bird: bird, nickname: nickname,
             });
         });
 };
