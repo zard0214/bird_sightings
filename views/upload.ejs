@@ -78,7 +78,65 @@
         </div>
     </form>
 </div>
-    <script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/public/javascripts/upload_worker.js').then(function(registration) {
+            console.log('Service worker registered successfully:', registration);
+        }).catch(function(error) {
+            console.error('Failed to register service worker', error);
+        });
+    }
+</script>
+<script src="public/javascripts/upload_worker.js"></script>
+<script>
+
+    const postSightings = (e) => {
+        e.preventDefault()
+        let formData = document.querySelector("#uploadForm")
+        let formD = new FormData(formData)
+        let ent = formD.forEach((item)=>{
+            console.log(item)
+        })
+
+        fetch("/record/upload/add",{
+            body: formD,
+            method: "post"
+        })
+            .then((response) => { // Success Response
+                console.log(response);
+                location.replace(response.url)
+            })
+            .catch((error) => { // Failed for some reason
+                // Add a new entry to indexed db
+                var request = window.indexedDB.open('formDataDB', 1);
+                var db;
+
+                request.onupgradeneeded = function(event) {
+                    db = event.target.result;
+                    var objectStore = db.createObjectStore('formData', {keyPath: id, autoIncrement: true});
+                    objectStore.createIndex('data', 'data', {unique: false});
+                };
+
+                request.onsuccess = function(event) {
+                    db = event.target.result;
+                };
+
+                request.onerror = function(event) {
+                    console.error("IndexedDB error");
+                };
+
+                var id = Date.now();
+                var transaction = db.transaction(['formData'], 'readwrite');
+                var objectStore = transaction.objectStore();
+
+                objectStore.add({id: id, data: formData});
+
+                this.reset();
+                console.log(error);
+            })
+        // create a new service worker somewhere which can pop elements in the indexed db and p
+    }
+
         function getCurrentTime() {
             var now = new Date();
             var datetime = now.toISOString().slice(0,16);

@@ -21,6 +21,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
 	console.log('[ServiceWorker] Activated');
 	//TODO add indexedDB in it.
+
 	event.waitUntil(async function () {
 		const cachesKeys = await caches.keys();
 		const deletePromises = cachesKeys.map((cacheName) => {
@@ -28,9 +29,21 @@ self.addEventListener('activate', event => {
 				console.log('[ServiceWorker] Removing Cached Files from Cache - ', cacheName);
 				return caches.delete(cacheName);
 			}
-		})
+		});
+		await Promise.all(deletePromises);
+		const cache = await caches.open(CACHE_NAME);
+		const cacheKeys = await cache.keys();
+		const db = await openIndexedDB();
 
-		return await Promise.all(deletePromises);
+		await Promise.all(cacheKeys.map(async request => {
+			const cachedResponse = await cache.match(request);
+			const responseClone = cachedResponse.clone();
+			const responseData = await responseClone.text();
+
+			const objectStore = db.transaction('cachedResponses','readwrite').objectStore('cachedResponses');
+			objectStore.put(responseData, request.url);
+		}));
+
 	}());
 });
 
