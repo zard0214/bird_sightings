@@ -36,20 +36,41 @@
 
                 </script>
                 <button style="width: 135px" type="submit">Search</button>
-            </form>
-            <td><a href="/record/upload">
-                    <button class="btn-info" style=" background:orange; margin-top: 20px">Upload</button></a>
-            </td>
+            </form><x></x>
 
         </div>
     </div>
-    <table class="table table-bordered" style="margin-top: 30px;border:1px solid orange;">
+    <table class="table table-bordered" id="myTable" style="margin-top: 30px;border:1px solid orange;">
+        <script src="/javascripts/sort.js"></script>
         <thead>
-        <tr><th style="text-align:center;">ID</th><th style="text-align:center;">Time</th><th style="text-align:center;">Identification</th><th style="text-align:center;">Location</th><th style="text-align:center;">User</th><th style="text-align:center;">Action</th></tr>
-        </thead>
-        <tbody>
-        <tbody>
+        <tr>
+            <th style="text-align:center;">ID</th>
+            <th style="text-align:center;">
+                <a href="/record?sort=time_1">
+                    <button class="sort-btn" id="ascend" data-sort="time" data-sort-order="ascend">&#x25B2;</button>
+                </a>
+                Time
+                <a href="/record?sort=time_-1">
+                    <button class="sort-btn" data-sort="time" data-sort-order="descend">&#x25BC;</button>
+                </a>
 
+
+            </th>
+
+            <th style="text-align:center;">Identification</th>
+                <th style="text-align:center;"><a>
+                        <a href="/record?sort=location_1">
+                            <button class="sort-btn" data-sort="location" data-sort-order="ascend">&#x25B2;</button>
+                        </a>
+                        Location
+                        <a href="/record?sort=location_-1">
+                        <button class="sort-btn" data-sort="location" data-sort-order="descend">&#x25BC;</button>
+                    </a>
+                </th>
+            <th style="text-align:center;">User</th>
+            <th style="text-align:center;">Action</th>
+        </tr>
+        </thead>
         <% var id = (page - 1 ) * 10; %>
         <% for (var i = 0; i < birds.length; i++) { %>
             <tr>

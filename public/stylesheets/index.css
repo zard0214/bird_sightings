@@ -33,3 +33,28 @@ th {
     background-color: orange;
     color: white;
 }
+.sort-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.sort-btn .arrow-up {
+    display: none;
+}
+.sort-btn .arrow-down {
+    display: none;
+}
+
+.sort-btn[data-sort-order="ascend"] .arrow-down {
+    display: none;
+}
+
+.sort-btn[data-sort-order="ascend"] .arrow-up {
+    display: inline-block;
+}
+
+.sort-btn[data-sort-order="descend"] .arrow-down {
+    display: inline-block;
+}

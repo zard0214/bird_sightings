@@ -3,7 +3,7 @@ const {format} = require("morgan");
 
 const fetchSightingWithPage = async (req, res, next) => {
     const body = req.query;
-    let nickname = req.session.nickname
+    let nickname = req.session.nickname;
     let pageNum = 1;
     if (req.query.pageNum != undefined) {
         pageNum = req.query.pageNum;
@@ -29,83 +29,65 @@ const fetchSightingWithPage = async (req, res, next) => {
     //page Number
     let total = Math.ceil(count / pageSize);
 
-    await Bird.schema.static.fetchSightingWithPage(body, pageNum, pageSize)
-        .then((doc) => {
-            const birds = doc
-            res.render('index', {
-                title: 'Search', nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,identification:body.identification
-            });
-        });
-};
-
-const fetchRecords = async (req, res, next) => {
-    const body = req.query;
-    let nickname = req.session.nickname
-    let pageNum = 1;
-    if (req.query.pageNum != undefined) {
-        pageNum = req.query.pageNum;
-        console.log("pageNum",pageNum)
-    }
-    for (const bodyKey in body) {
-        if (body[bodyKey] === '') {
-            delete body[bodyKey];
-        }
-        if (bodyKey === 'pageNum') {
-            delete body[bodyKey];
-        }
-        if (bodyKey === 'startTime' || bodyKey === 'endTime') {
-            // body.
-            // delete body[bodyKey];
-            if(bodyKey === 'startTime') {
-                // body.query().set('time', '$gt: ' + body[bodyKey])
-            }
-            if(bodyKey === 'endTime') {
-                // body.query().set('time', '$lt: ' + body[bodyKey])
-            }
-            delete body[bodyKey];
-        }
-        console.log('bodyKeyaaaa: ' + bodyKey)
-        // console.log('body[bodyKey]: ' + body[bodyKey])
-    }
-    //max data in one page
-    let pageSize = 10;
-    if (req.query.pageSize != undefined) {
-        pageSize = parseInt(req.query.pageSize);
-    }
-    //get data
-    let count = await Bird.schema.static.totalCount(body);
-    //page Number
-    let total = Math.ceil(count / pageSize);
-
-
-    let input_field=""
-    let identifier_type=""
-    if (body.input_field) {
-        input_field = body.input_field;
-        identifier_type = body.identifier_type;
-        if (identifier_type === 'witnesses') {
-            body['witnesses'] = input_field;
-            console.log("witnesses", body['witnesses'])
-            delete body['identification'];
-        } else {
-            console.log('identification', body['identification'])
-            body['identification'] = input_field;
-            delete body['witnesses'];
-        }
-    }
-
-    console.log('body: ', body)
-    console.log('pageNum',pageNum)
 
     await Bird.schema.static.fetchSightingWithPage(body, pageNum, pageSize)
         .then((doc) => {
             const birds = doc
             res.render('index', {
-                title:'Records', menuId:'home', nickname: nickname, birds: birds, page: pageNum || 1, total: total, witnesses: body.witnesses, identification:body.identification,
-                input_field, identifier_type,
+                title: 'Search', menuId:'home',nickname: nickname, birds: birds, page: pageNum, total: total, Witnesses: body.Witnesses,identification:body.identification
             });
         });
 };
+const sortBirds = async (req, res, next) => {
+    try {
+        const sort = req.query.sort;
+        let nickname = req.session.nickname;
+        let pageNum = req.query.pageNum || 1;
+        let pageSize = 10;
+
+        // Retrieve bird data from the database
+        let birds = await Bird.sortByTime(req.query, pageNum, pageSize);
+
+        // Get the total number of pages
+        let totalCount = await Bird.schema.static.totalCount(req.query);
+        let totalPage = Math.ceil(totalCount / pageSize);
+
+        // Sort the bird data based on the specified sort parameter
+        if (sort === 'time_1') {
+            birds = await Bird.sortByTime('asc', pageNum, pageSize);
+            console.log()
+        } else if (sort === 'time_-1') {
+            birds = await Bird.sortByTime('desc', pageNum, pageSize);
+        }
+        else if (sort === 'location_1') {
+            birds=await Bird.s
+        }
+
+        res.render('index', {
+            title: 'Bird Sightings',
+            menuId: 'sort',
+            nickname: nickname,
+            birds: birds,
+            page: pageNum,
+            total: totalPage
+        });
+    } catch (error) {
+        // 处理错误
+        console.error(error);
+        // 返回错误页面或其他逻辑
+        res.render('error', {
+            title: 'Error',
+            error: error
+        });
+    }
+};
+
+
+
+
+
+
+
 
 const searchRecords = async (req, res, next) => {
     const body = req.query;
@@ -216,27 +198,66 @@ const findRecordById = async (req, res, next) => {
         });
 };
 const findNearbyBirds = async (req, res, next) => {
+    const body = req.body;
+    let nickname = req.session.nickname;
+    const latitude = body.latitude;
+    const longitude = body.longitude;
+    const distance = body.distance;
     try {
-        const birds = await Bird.find({}).limit(99999);
-        const birdData = birds.map(bird => ({
+        // Query all birds from the database or any data source
+        const allBirds = await Bird.find();
+
+        // Calculate distance for each bird and filter based on the specified distance
+        const nearbyBirds = allBirds.filter(bird => {
+            const birdLatitude = bird.latitude;
+            const birdLongitude = bird.longitude;
+            const birdDistance = calculateDistance(latitude, longitude, birdLatitude, birdLongitude);
+
+            return birdDistance <= distance;
+
+
+        });
+
+        const birdData = nearbyBirds.map(bird => ({
             identification: bird.identification,
             latitude: bird.latitude,
             longitude: bird.longitude,
-            picture:bird.picture,
-             description:bird.description,
+            picture: bird.picture,
+            description: bird.description,
         }));
-        // console.log(birdData);
-        res.render('map', { title: 'Nearby Birds', menuId: 'nearby', birds:birdData });
+        res.json(birdData);
+        console.log(birdData);
+
     } catch (error) {
         console.log(error);
         res.redirect('/');
     }
 }
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const earthRadius = 6371; // Radius of the earth in kilometers
+
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadius * c;
+
+    return distance;
+}
+
+// Function to convert degrees to radians
+function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}
 
 
 module.exports = {
     fetchSightingWithPage: fetchSightingWithPage,
-    fetchRecords: fetchRecords,
+    sortBirds:sortBirds,
     findRecordById: findRecordById,
     searchRecords:searchRecords,
     findNearbyBirds: findNearbyBirds,

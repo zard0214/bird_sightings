@@ -81,6 +81,15 @@ birdSchema.static.findRecordById =
                 });
         });
     };
+birdSchema.statics.sortByTime =
+    function(sortOrder = 'asc') {
+    const sortOptions = {
+        time: sortOrder === 'asc' ? 1 : -1
+    };
+
+    return this.find({}).sort(sortOptions);
+};
+
 
 const Bird = mongoose.model('birds_record', birdSchema);
 // for (let i = 1; i <= 29; i++) {

@@ -1,5 +1,4 @@
-
-## Getting started
+    ## Getting started
 
 ```bash
 # clone the project
