@@ -21,6 +21,38 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
 	console.log('[ServiceWorker] Activated');
 	//TODO add indexedDB in it.
+	// Open or create the IndexedDB database
+	const request = indexedDB.open('myDatabase', 1);
+
+	request.onupgradeneeded = event => {
+		const db = event.target.result;
+		db.createObjectStore('formData', { autoIncrement: true });
+	};
+
+	request.onerror = event => {
+		console.error('IndexedDB error:', event.target.error);
+	};
+
+	request.onsuccess = event => {
+		const db = event.target.result;
+
+		function storeFormData(formData) {
+			const transaction = db.transaction(['formData'], 'readwrite');
+			const objectStore = transaction.objectStore('formData');
+			const request = objectStore.add(formData);
+
+			request.onsuccess = () => {
+				console.log('Form data stored in IndexedDB.');
+			};
+
+			request.onerror = () => {
+				console.error('Error storing form data in IndexedDB.');
+			};
+		}
+
+		// Example usage:
+		// Call storeFormData(formData) to store form data
+	};
 	event.waitUntil(async function () {
 		const cachesKeys = await caches.keys();
 		const deletePromises = cachesKeys.map((cacheName) => {
