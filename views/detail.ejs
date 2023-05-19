@@ -231,8 +231,11 @@
 
             <div id="description_box"  style="overflow-y:scroll; overflow-x:hidden; height:300px;
             background-color: #f5f5f5;border: 1px solid #e67818;border-radius: 5px;">
-                <div >
-                    <div>
+                <div style="width: 50%; margin: 10px auto 0; text-align: center;">
+                    <label for="chat_room">Chat Room</label>
+                </div>
+
+                <div style="height: 300px">
                         <div id="initial_form" style="display: block;height: 0px">
                             <p style="display: none" >Please insert the id of the Room you want to Join, if you do not have a room id, click Generate Room</p>
                             <form onsubmit="return false;" style="display: none">
@@ -247,16 +250,16 @@
                                 <button id="connect" onclick="connectToRoom()">Connect</button>
                             </form>
                         </div>
-                        <div id="chat_interface" >
+                        <div id="chat_interface" style="height: 100%">
                             <div style="text-align:center; visibility: hidden;height: 0px">
                                 <div id="who_you_are" style="display: none" value="<%= nickname %>"></div>, <h4> Room: <div id="in_room" style="display: inline"></div></h4>
                             </div>
-                            <div id="history" class="boxed"></div>
+                            <div id="history" class="boxed" style="height: calc(100% - 60px);"></div>
                             <div id="input" class="bottom boxed">
                                 <form id= "chatForm" onsubmit="return false;" style="width: 100%">
                                     <p>
-                                    <div id="chat_form" style="display: flex; justify-content: space-between; align-items: center;">
-                                        <label for="name"> YOU: </label>
+                                    <div id="chat_form" style="display: flex; justify-content: flex-end; align-items: center;">
+                                    <label for="name"> YOU: </label>
                                         <input type="text" id="chat_input" name="chat_input" style="width: 75%; margin-right: 10px;">
                                         <button id="chat_send" onclick="sendChatText()" style="padding: 10px 10px; font-size: 13px; border-radius: 5px; background-color: orange; color: #fff; cursor: pointer;">Send</button>
                                     </div>
@@ -264,7 +267,6 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
             <style>
@@ -277,9 +279,9 @@
                 }
 
                 #history {
-                    height: calc(100% - 60px); /* adjust this value based on the height of your input area */
+                    height:200px; /* adjust this value based on the height of your input area */
                     overflow-y: auto;
-                    background: palegoldenrod;
+                    background: lightskyblue;
                     padding: 10px;
                     border: 1px solid #ddd;
                     border-radius: 5px;

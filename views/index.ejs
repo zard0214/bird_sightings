@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head >
     <%- include('includes/head.ejs') %>
     <link rel='stylesheet' href='/stylesheets/index.css'>
 </head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <body>
 <%- include('includes/menu.ejs') %>
 
@@ -15,7 +17,7 @@
                 <input style="width: 220px;" type="datetime-local" name="startTime" id="startTime" >
                 <input style="width: 220px" type="datetime-local" name="endTime" id="endTime">
                 <input style="width: 220px;height:30px" type="text" id="myInput" name="input_field" placeholder="Enter identification or username">
-                <select name="identifier_type" >
+                <select name="identifier_type"style="width: 220px" >
                     <option value="identification">identification</option>
                     <option value="witnesses">witnesses</option>
                 </select>
@@ -40,6 +42,7 @@
 
         </div>
     </div>
+    <div class="table-container">
     <table class="table table-bordered" id="myTable" style="margin-top: 30px;border:1px solid orange;">
         <script src="/javascripts/sort.js"></script>
         <thead>

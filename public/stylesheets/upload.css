@@ -1,3 +1,24 @@
+@media only screen and (max-width: 600px) {
+    .all_box {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .upload_box,
+    .location_box,
+    .map_box,
+    .picture_box,
+    .description_box,
+    .identification-time_box {
+        grid-column: span 2;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #e67818;
+        border-radius: 5px;
+    }
+}
+
 .title {
     text-align: center;
     margin-bottom: 20px;

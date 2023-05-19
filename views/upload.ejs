@@ -62,49 +62,29 @@
             <div class="description_box">
                 <div class="form-group_de">
                     <label>Description</label>
-                    <textarea class="form-control" rows="6" name="description" placeholder="Please enter your description"></textarea>
+                    <textarea class="form-control" rows="6" name="description" id="description" placeholder="Please enter your description"></textarea>
                 </div>
             </div>
             <div class="identification-time_box">
                 <div class="form-group_ind" style="margin-bottom: 15px">
                     <label>IDENTIFICATION</label>
-                    <input type="text" class="form-control" name="identification" placeholder="Please enter the bird's identification">
-                    <button type="button" id="identify_button_click">Get identification</button>
+                    <input type="text" class="form-control" name="identification" id="identification" placeholder="Please enter the bird's identification">
+                    <button type="button" id="identify_button_click" style="float: right;margin-bottom: 10px">Get identification</button>
                 </div>
-                <div class="form-group_code">
+                <div class="form-group_code" style="margin-top: 30px">
                     <label>UPLOAD CODE</label>
                     <input type="text" class="form-control" name="code" id="code" placeholder="Please enter the bird's identification">
                     <button type="button" onclick="generateUniquePassword()" style="float: right;margin-bottom: 10px">Get Upload Code</button>
                 </div>
             </div>
                     </div>
-                    <div class=" description_box">
-                        <div class="form-group_de">
-                            <label>Description</label>
-                            <textarea class="form-control" id="description" rows="6" name="description" placeholder="Please enter your description"></textarea>
 
-                        </div>
-                    </div>
-                    <div class="identification-time_box">
-                        <!--  -->
-                        <div class="form-group_tim">
-                            <label>Time</label>
-                            <input type="datetime-local " id="time" name="time" value=" "><br>
-                            <button type="button" id="time_button_click">Get Current Time</button><br><br>
-                        </div>
-                        <div class="form-group_ind">
-                            <label>IDENTIFICATION</label>
-                            <input type="text" class="form-control" id="identification" name="identification" placeholder=" Please enter the bird 's identification">
-                            <button type="button" id="identify_button_click">Get identification</button><br><br>
-                        </div>
-                    </div>
-
-        </div>
         <div>
             <button type="submit">UPLOAD</button>
         </div>
     </form>
 </div>
+    </body>
 
 <script>
     function getCurrentTime() {
@@ -132,62 +112,17 @@
     }
 
 
-
-
 </script>
 </body>
-<footer class="text-muted bg-indigo" id="footer">
-    <%- include('includes/footer.ejs') %>
-</footer>
-<%- include('includes/script.ejs') %>
-                </div>
-                <div>
-                    <button type="submit">UPLOAD</button>
-                </div>
-            </form>
-        </div>
+
         <script>
-            var file = document.querySelector('#file ');
-            var preview = document.querySelector('#preview ');
-            file.onchange = function() {
-                    var reader = new FileReader();
-                    console.log(this.files[0])
-                    reader.readAsDataURL(this.files[0]);
-                    reader.onload = function() {
-                        console.log(reader.result)
-                        preview.src = reader.result
-                    }
-                }
-                //document.getElementById("upload ").style.display = "none ";
-
-            function getCurrentTime() {
-                var now = new Date();
-                var datetime = now.toISOString().slice(0, 16);
-                document.getElementById("time").value = datetime;
-            }
-
-
-
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                } else {
-                    alert("Geolocation is not supported by this browser.");
-                }
-            }
-
-            function showPosition(position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
-                document.getElementById("location_input").value = latitude + "," + longitude;
-            }
 
             function checkInputFilledById(e) {
                 console.log(e);
                 //const input = document.getElementById(id);
                 //if (input) {
                 //    if (input.isEmpty()) {
-                //        console.log("Please fill the fields ")
+                //        console.log("Please fill the fields ")location_button_click
                 //    } else {
                 //         console.log("all are fi the fields ")
                 //    }
@@ -195,32 +130,32 @@
                 //return false;
             }
 
-            const location_button = document.getElementById("location_button_click");
-            location_button.addEventListener("click", getLocation);
-
-            const time_button = document.getElementById("time_button_click");
-            time_button.addEventListener("click", getCurrentTime);
-
-            //const idedntify_button = document.getElementById("identify_button_click");
-            //time_button.addEventListener("click", getIdentification);
-
-            const description = document.getElementById("description");
-            description.addEventListener("input", checkInputFilledById);
-            console.log(description);
-
-            const listen_location = document.getElementById("location_input");
-            listen_location.addEventListener("input", checkInputFilledById);
-            console.log(listen_location);
-
-            const time = document.getElementById("time");
-            time.addEventListener("input", checkInputFilledById);
-            console.log(time);
+            // const location_button = document.getElementById("location_button_click");
+            // location_button.addEventListener("click", getLocation);
+            //
+            // const time_button = document.getElementById("time_button_click");
+            // time_button.addEventListener("click", getCurrentTime);
+            //
+            // //const idedntify_button = document.getElementById("identify_button_click");
+            // //time_button.addEventListener("click", getIdentification);
+            //
+            // const description = document.getElementById("description");
+            // description.addEventListener("input", checkInputFilledById);
+            // console.log(description);
+            //
+            // const listen_location = document.getElementById("location_input");
+            // listen_location.addEventListener("input", checkInputFilledById);
+            // console.log(listen_location);
+            //
+            // const time = document.getElementById("time");
+            // time.addEventListener("input", checkInputFilledById);
+            // console.log(time);
 
             const identifyButton = document.getElementById("identify_button_click");
             identifyButton.addEventListener("click", () => {
                 const description = document.getElementById("description").value;
                 const photo = document.getElementById("preview").src;
-                const location = document.getElementById("location_input").value;
+                const location = document.getElementById("location-input").value;
 
                 if (photo && location && description) {
                     const data = {
@@ -228,7 +163,8 @@
                         photo: photo,
                         location: location
                     };
-                    fetch('/record/upload/identifier', {
+                    console.log(data)
+                    fetch('/record/upload/identifier',{
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -237,10 +173,10 @@
                         }).then(response => response.json())
                         .then(data => {
                             if (data.code === 200) {
-                                console.log("Found bird URI:", data.data.birdURI);
-                                identification.value = data.data.birdURI;
+                                console.log("Found bird URI:", data);
+                                document.getElementById("identification").value= data.data.birdURI;
                             } else {
-                                identification.value = "NA";
+                                document.getElementById("identification").value = "NA";
                                 console.log("Bird not found on DBpedia.");
                             }
                         })
@@ -305,5 +241,9 @@
             //}
         </script>
 </body>
+<footer class="text-muted bg-indigo" id="footer">
+    <%- include('includes/footer.ejs') %>
+</footer>
+<%- include('includes/script.ejs') %>
 
 </html>
