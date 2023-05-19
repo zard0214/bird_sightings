@@ -8,6 +8,7 @@ const uploadBird = (req, res) => {
     console.log(form.uploadDir)
     form.keepExtensions = false;
     form.parse(req, async (err, fields, files) => {
+        console.log(fields.code)
         if (err) {
             console.log(err);
             return res.status(500).json({ error: 'Failed to parse form data' });
@@ -32,7 +33,8 @@ const uploadBird = (req, res) => {
             longitude: longitude,
             picture: files.picture.filepath.split('public')[1],
             description: fields.description,
-            witnesses: req.session.nickname
+            witnesses: req.session.nickname,
+            code:fields.code,
         }, (err, bird) => {
             if (err) {
                 console.log(err);

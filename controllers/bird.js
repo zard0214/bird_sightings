@@ -1,5 +1,6 @@
 const Bird = require('../models/bird');
 const {format} = require("morgan");
+const formidable = require("formidable");
 
 const fetchSightingWithPage = async (req, res, next) => {
     const body = req.query;
@@ -46,7 +47,7 @@ const sortBirds = async (req, res, next) => {
         let pageSize = 10;
 
         // Retrieve bird data from the database
-        let birds = await Bird.sortByTime(req.query, pageNum, pageSize);
+        let birds = await Bird.schema.sortByTime(req.query, pageNum, pageSize);
 
         // Get the total number of pages
         let totalCount = await Bird.schema.static.totalCount(req.query);
@@ -55,12 +56,10 @@ const sortBirds = async (req, res, next) => {
         // Sort the bird data based on the specified sort parameter
         if (sort === 'time_1') {
             birds = await Bird.sortByTime('asc', pageNum, pageSize);
-            console.log()
         } else if (sort === 'time_-1') {
             birds = await Bird.sortByTime('desc', pageNum, pageSize);
-        }
-        else if (sort === 'location_1') {
-            birds=await Bird.s
+        } else {
+            birds = await Bird.sortByTime('asc', pageNum, pageSize); // 默认排序方式
         }
 
         res.render('index', {
@@ -81,6 +80,9 @@ const sortBirds = async (req, res, next) => {
         });
     }
 };
+
+
+
 
 
 
@@ -198,24 +200,36 @@ const findRecordById = async (req, res, next) => {
         });
 };
 const findNearbyBirds = async (req, res, next) => {
-    const body = req.body;
-    let nickname = req.session.nickname;
-    const latitude = body.latitude;
-    const longitude = body.longitude;
-    const distance = body.distance;
+    const form = formidable({ multiples: true });
+
     try {
-        // Query all birds from the database or any data source
+        const { fields } = await new Promise((resolve, reject) => {
+            form.parse(req, (err, fields, files) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve({ fields, files });
+            });
+        });
+
+        const latitude = fields.latitude;
+        const longitude = fields.longitude;
+        const distance = fields.distance;
+        console.log("Latitude:", latitude);
+        console.log("Longitude:", longitude);
+        console.log("Distance:", distance);
+
+
         const allBirds = await Bird.find();
 
-        // Calculate distance for each bird and filter based on the specified distance
+
         const nearbyBirds = allBirds.filter(bird => {
             const birdLatitude = bird.latitude;
             const birdLongitude = bird.longitude;
             const birdDistance = calculateDistance(latitude, longitude, birdLatitude, birdLongitude);
 
             return birdDistance <= distance;
-
-
         });
 
         const birdData = nearbyBirds.map(bird => ({
@@ -225,14 +239,15 @@ const findNearbyBirds = async (req, res, next) => {
             picture: bird.picture,
             description: bird.description,
         }));
-        res.json(birdData);
-        console.log(birdData);
 
+        res.json(birdData);
+        console.log("Bird Data:", birdData);
     } catch (error) {
-        console.log(error);
-        res.redirect('/');
+        console.log("Error:", error);
+        res.redirect("/");
     }
-}
+};
+
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const earthRadius = 6371; // Radius of the earth in kilometers
 
@@ -253,12 +268,31 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 function toRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
+const changeIdentification = async (req, res, next) => {
+    body = req.body;
+    console.log("1", body);
+    identification = body.identificationValue;
+    id = body.id;
+    code = body.codeValue;
+    console.log(id, identification, code);
+
+    try {
+        const updatedBird = await Bird.updateIdentificationById(id, identification, code);
+        console.log(updatedBird);
+        res.json({ success: true, bird: updatedBird }); // Send success response with the updated bird
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ success: false, message: 'An error occurred. Please try again.' }); // Send error response with the error message
+    }
+};
+
 
 
 module.exports = {
     fetchSightingWithPage: fetchSightingWithPage,
-    sortBirds:sortBirds,
+    // sortBirds:sortBirds,
     findRecordById: findRecordById,
     searchRecords:searchRecords,
     findNearbyBirds: findNearbyBirds,
+    changeIdentification:changeIdentification,
 };

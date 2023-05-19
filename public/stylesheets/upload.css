@@ -21,6 +21,7 @@
     border-radius: 5px;
 }
 
+
 .description_box{
     grid-column: span 1;
     padding: 20px;
@@ -60,7 +61,6 @@
 
 .identification_box label,
 .location_box label,
-.time_box label,
 .description_box label {
     display: block;
     margin-bottom: 5px;
@@ -68,8 +68,7 @@
 }
 
 .identification-time_box input,
-.location_box input,
-.time_box input,
+.form-group_location input,
 .description_box input {
     display: block;
     width: 100%;
@@ -78,18 +77,31 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+.form-group_tim input{
+    display: block;
+    width: 100%;
+
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 
 .location_box button,
 .identification-time_box button {
-    text-align: right;
+    width: 130px;
+    text-align: center;
     display: block;
     margin-top: 10px;
     padding: 10px;
-    font-size: 16px;
+    font-size: 11px;
     border-radius: 5px;
     background-color: orange;
     color: #fff;
     cursor: pointer;
+}
+.form-group_tim input[type="datetime-local"] {
+    height: 34px; /* Adjust the width as per your preference */
 }
 
 form button[type="submit"] {

@@ -22,7 +22,8 @@ const birdSchema = new Schema({
     witnesses: {
         type: String,
         ref: 'users'
-    }
+    },
+    code:String
 }, {
     timestamps: true
 });
@@ -81,6 +82,28 @@ birdSchema.static.findRecordById =
                 });
         });
     };
+birdSchema.statics.updateIdentificationById =
+    async function(id, newIdentification, code) {
+    try {
+        const bird = await this.findById(id);
+        if (!bird) {
+            throw new Error('Bird not found');
+        }
+
+        if (code === bird.code) {
+            bird.identification = newIdentification;
+            const updatedBird = await bird.save();
+            return updatedBird;
+        } else {
+            throw new Error('Invalid code');
+        }
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+
 birdSchema.statics.sortByTime =
     function(sortOrder = 'asc') {
     const sortOptions = {

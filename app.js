@@ -1,11 +1,9 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-const multer = require('multer');
 
 var login = require('./routes/user');
 var index = require('./routes/index');
@@ -19,6 +17,9 @@ var swaggerInstall = require('./util/swagger')
 const { error } = require("swagger-node-express");
 swaggerInstall(app)
 
+// const multer = require('multer');
+// app.use(multer().any()); // 添加 multer 中间件
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -30,8 +31,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(multer().any()); // 添加 multer 中间件
 
 app.use('/', login);
 app.use('/login', login);
@@ -59,5 +58,7 @@ app.use(function (err, req, res, next) {
   else
     res.render('error', { status: err.status, message: err.message });
 });
+
+
 
 module.exports = app;
