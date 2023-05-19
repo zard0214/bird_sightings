@@ -156,12 +156,16 @@
                 }
             });
 
-            const identifyButton = document.getElementById("identify_button_click");
 
+
+            const identifyButton = document.getElementById("identify_button_click");
+            //identifyButton.addEventListener("click", fetchBirdList);
             identifyButton.addEventListener("click", () => {
-                if (identification) {
+                const identificationValue = identificationSelect.value;
+                console.log("Selected identification:", identificationValue);
+                if (identificationValue) {
                     const data = {
-                        identification: identification,
+                        identification: identificationValue,
                     };
                     fetch('/record/upload/identifier', {
                             method: 'POST',
@@ -173,7 +177,7 @@
                         .then(data => {
                             if (data.code === 200) {
                                 console.log("Found bird URI:", data.data.birdURI);
-                                identification.value = data.data.birdURI;
+                                identificationSelect.value = data.data.birdURI;
                             } else {
                                 identification.value = "NA";
                                 console.log("Bird not found on DBpedia.");
