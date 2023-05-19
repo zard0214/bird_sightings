@@ -17,10 +17,8 @@ function login(req, res) {
             User.create({ nickname: nickname })
                 .then(createdUser => {
                     console.log('New user created:', createdUser);
-
                     // Store the user ID (_id) in the session
                     req.session.nickname = nickname;
-
                     res.redirect('/record');
                 })
                 .catch(error => {

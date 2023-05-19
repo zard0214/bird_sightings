@@ -92,6 +92,11 @@ function writeOnHistory(text) {
     document.getElementById('chat_input').value = '';
 }
 
+/**
+ * get the chat record from the mongodb
+ * @param room
+ * @param userId
+ */
 function writeChatHistory(room, userId) {
     console.log("writeChatHistory")
     $.ajax({
@@ -128,6 +133,13 @@ function writeChatHistory(room, userId) {
     });
 }
 
+/**
+ * using http request to save the chat record to the mongodb
+ *
+ * @param room
+ * @param userId
+ * @param chatText
+ */
 function writeHistory(room, userId, chatText) {
     var chatRecord =
         { time: new Date(), chat_room: roomNo, user: userId, chat_text: chatText };

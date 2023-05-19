@@ -48,6 +48,22 @@ router.get('/login', (req, res) => {
  * */
 router.post('/login', User.login);
 
+/**,
+ * @swagger
+ * /login:
+ *    get:
+ *      tags:
+ *      - logout
+ *      summary: logout
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *      responses:
+ *        200:
+ *          description: successful operation
+ *          schema:
+ *            ref: #/logout
+ * */
 router.get('/logout', User.logout);
 
 module.exports = router

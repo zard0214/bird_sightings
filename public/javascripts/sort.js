@@ -1,3 +1,6 @@
+/**
+ * sort data by date
+ */
 function sort() {
 
     var ascendBtn = document.getElementById('ascend');

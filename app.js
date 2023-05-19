@@ -18,8 +18,7 @@ const { error } = require("swagger-node-express");
 swaggerInstall(app)
 
 // const multer = require('multer');
-// app.use(multer().any()); // 添加 multer 中间件
-
+// app.use(multer().any());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

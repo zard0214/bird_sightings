@@ -2,6 +2,11 @@ const path = require('path');
 const formidable = require('formidable');
 const Bird = require('../models/bird');
 
+/**
+ * insert the sighting records
+ * @param req
+ * @param res
+ */
 const uploadBird = (req, res) => {
     const form = new formidable.IncomingForm();
     form.uploadDir = path.join(__dirname, '../', 'public', 'uploads');

@@ -2,6 +2,15 @@ const Bird = require('../models/bird');
 const {format} = require("morgan");
 const formidable = require("formidable");
 
+/**
+ * find sighting record
+ *
+ * deal with the query param & get the data from the persistence layer
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 const fetchSightingWithPage = async (req, res, next) => {
     const body = req.query;
     let nickname = req.session.nickname;
@@ -30,7 +39,6 @@ const fetchSightingWithPage = async (req, res, next) => {
     //page Number
     let total = Math.ceil(count / pageSize);
 
-
     await Bird.schema.static.fetchSightingWithPage(body, pageNum, pageSize)
         .then((doc) => {
             const birds = doc
@@ -39,6 +47,16 @@ const fetchSightingWithPage = async (req, res, next) => {
             });
         });
 };
+
+/**
+ * sort record ?
+ *
+ * deal with the query param & get the data from the persistence layer
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 const sortBirds = async (req, res, next) => {
     try {
         const sort = req.query.sort;
@@ -81,16 +99,15 @@ const sortBirds = async (req, res, next) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
-
+/**
+ * find sighting record (it is the same feature with fetchSightingWithPage)
+ *
+ * deal with the query param & get the data from the persistence layer
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 const searchRecords = async (req, res, next) => {
     const body = req.query;
     const startTime = req.query.startTime;
@@ -173,6 +190,13 @@ const searchRecords = async (req, res, next) => {
         });
 };
 
+/**
+ *  find the sighting record by record id
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 const findRecordById = async (req, res, next) => {
     const body = req.query;
     let nickname = req.session.nickname
@@ -199,6 +223,15 @@ const findRecordById = async (req, res, next) => {
             });
         });
 };
+
+/**
+ * find the nearby sighting record
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 const findNearbyBirds = async (req, res, next) => {
     const form = formidable({ multiples: true });
 
@@ -220,9 +253,7 @@ const findNearbyBirds = async (req, res, next) => {
         console.log("Longitude:", longitude);
         console.log("Distance:", distance);
 
-
         const allBirds = await Bird.find();
-
 
         const nearbyBirds = allBirds.filter(bird => {
             const birdLatitude = bird.latitude;
@@ -248,6 +279,15 @@ const findNearbyBirds = async (req, res, next) => {
     }
 };
 
+/**
+ * calculate distance between to location
+ *
+ * @param lat1
+ * @param lon1
+ * @param lat2
+ * @param lon2
+ * @returns {number}
+ */
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const earthRadius = 6371; // Radius of the earth in kilometers
 
@@ -268,6 +308,15 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 function toRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
+
+/**
+ *  update the identification by record id
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<void>}
+ */
 const changeIdentification = async (req, res, next) => {
     body = req.body;
     console.log("1", body);
@@ -275,7 +324,6 @@ const changeIdentification = async (req, res, next) => {
     id = body.id;
     code = body.codeValue;
     console.log(id, identification, code);
-
     try {
         const updatedBird = await Bird.updateIdentificationById(id, identification, code);
         console.log(updatedBird);
@@ -285,7 +333,6 @@ const changeIdentification = async (req, res, next) => {
         res.status(400).json({ success: false, message: 'An error occurred. Please try again.' }); // Send error response with the error message
     }
 };
-
 
 
 module.exports = {

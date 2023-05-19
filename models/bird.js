@@ -6,6 +6,10 @@ mongoose.connect(config.mongodb , { useNewUrlParser: true })
 
 const Schema = mongoose.Schema;
 
+/**
+ * schema of sighting birds record
+ * @type {module:mongoose.Schema<Document, Model<Document, any, any>, undefined, {}>}
+ */
 const birdSchema = new Schema({
     //time: Date,
     time: {
@@ -28,6 +32,11 @@ const birdSchema = new Schema({
     timestamps: true
 });
 
+/**
+ * get total number of sighting birds record by query param
+ * @param findArgs
+ * @returns {Promise<unknown>}
+ */
 birdSchema.static.totalCount = function (findArgs) {
     return new Promise(async (resolve, reject) => {
         await Bird.countDocuments(findArgs)
@@ -42,6 +51,13 @@ birdSchema.static.totalCount = function (findArgs) {
     });
 };
 
+/**
+ * get sighting records by query param
+ * @param findArgs
+ * @param pageNum
+ * @param pageSize
+ * @returns {Promise<unknown>}
+ */
 birdSchema.static.fetchSightingWithPage =
     function(findArgs = {},
              pageNum = 1,
@@ -68,6 +84,11 @@ birdSchema.static.fetchSightingWithPage =
         });
     };
 
+/**
+ * get the sighting birds record by record id
+ * @param findArgs
+ * @returns {Promise<unknown>}
+ */
 birdSchema.static.findRecordById =
     function(findArgs = {}) {
         return new Promise(async (resolve, reject) => {
@@ -82,6 +103,15 @@ birdSchema.static.findRecordById =
                 });
         });
     };
+
+/**
+ * update the sighting birds record identification by record id
+ *
+ * @param id
+ * @param newIdentification
+ * @param code
+ * @returns {Promise<*>}
+ */
 birdSchema.statics.updateIdentificationById =
     async function(id, newIdentification, code) {
     try {
@@ -103,7 +133,12 @@ birdSchema.statics.updateIdentificationById =
     }
 };
 
-
+/**
+ * sort the sighting record by time
+ *
+ * @param sortOrder
+ * @returns {*}
+ */
 birdSchema.statics.sortByTime =
     function(sortOrder = 'asc') {
     const sortOptions = {
