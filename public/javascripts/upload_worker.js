@@ -2,12 +2,12 @@ let cache = null;
 let dataCacheName = 'birdData';
 let cacheName = 'birdSightingApp';
 let filesToCache = [
-    '/javacripts/app.js',
     '/stylesheets/upload.css',
     '/image/upload.png',
     '/',
     '/javascripts/chat.js',
-    '/javascripts/menu.js'
+    '/javascripts/menu.js',
+    '/record/upload'
     // Add other URLs to cache here
 ];
 
