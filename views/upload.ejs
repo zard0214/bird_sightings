@@ -136,6 +136,54 @@
                 //return false;
             }
 
+            const location_button = document.getElementById("location_button_click");
+            location_button.addEventListener("click", getLocation);
+
+            const time_button = document.getElementById("time_button_click");
+            time_button.addEventListener("click", getCurrentTime);
+
+            //const idedntify_button = document.getElementById("identify_button_click");
+            //time_button.addEventListener("click", getIdentification);
+
+            const description = document.getElementById("description");
+            description.addEventListener("input", checkInputFilledById);
+            console.log(description);
+
+            const listen_location = document.getElementById("location_input");
+            listen_location.addEventListener("input", checkInputFilledById);
+            console.log(listen_location);
+
+            const time = document.getElementById("time");
+            time.addEventListener("input", checkInputFilledById);
+            console.log(time);
+            const identificationSelect = document.getElementById("identification")
+            identificationSelect.addEventListener("click", async() => {
+                try {
+                    const response = fetch('/record/upload/bird_list', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }).then(function(response) {
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Loop through the data and create options
+                            console.log(data);
+                            for (let i = 0; i < data.data.bird_list.length; i++) {
+                                const option = data.data.bird_list[i];
+                                const optionElement = document.createElement("option");
+                                optionElement.value = option;
+                                optionElement.textContent = option;
+                                identificationSelect.appendChild(optionElement);
+                            }
+                        })
+                } catch (error) {
+                    console.error("Error fetching bird list:", error);
+                }
+            });
+
+
             // const location_button = document.getElementById("location_button_click");
             // location_button.addEventListener("click", getLocation);
             //
@@ -158,16 +206,18 @@
             // console.log(time);
 
             const identifyButton = document.getElementById("identify_button_click");
+            //identifyButton.addEventListener("click", fetchBirdList);
             identifyButton.addEventListener("click", () => {
+                const identificationValue = identificationSelect.value;
+                console.log("Selected identification:", identificationValue);
+                if (identificationValue) {
                 const description = document.getElementById("description").value;
                 const photo = document.getElementById("preview").src;
                 const location = document.getElementById("location-input").value;
 
                 if (photo && location && description) {
                     const data = {
-                        description: description,
-                        photo: photo,
-                        location: location
+                        identification: identificationValue,
                     };
                     console.log(data)
                     fetch('/record/upload/identifier',{
@@ -179,6 +229,8 @@
                         }).then(response => response.json())
                         .then(data => {
                             if (data.code === 200) {
+                                console.log("Found bird URI:", data.data.birdURI);
+                                identificationSelect.value = data.data.birdURI;
                                 console.log("Found bird URI:", data);
                                 document.getElementById("identification").value= data.data.birdURI;
                             } else {
