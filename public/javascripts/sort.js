@@ -2,7 +2,6 @@
  * sort data by date
  */
 function sort() {
-
     var ascendBtn = document.getElementById('ascend');
     var descendBtn = document.querySelector('[data-sort-order="descend"]');
 
@@ -12,12 +11,8 @@ function sort() {
 
     //get the date
     function parseDate(dateString) {
-        var parts = dateString.split(' ');
-        var dateParts = parts[0].split('-');
-        var timeParts = parts[1].split(':');
-        return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1], timeParts[2]);
+        return new Date(dateString);
     }
-
     //sort
     function sortTable(order) {
         var table = document.getElementById('myTable');

@@ -3,12 +3,15 @@
 <head>
     <%- include('includes/head.ejs') %>
     <link rel='stylesheet' href='/stylesheets/upload.css'>
+    <script src="/javascripts/app.js"></script>
+    <script type="module" src="/javascripts/database.js"></script>
+
 </head>
-<body>
+<body onload="initBirdSighting()">
 <%- include('includes/menu.ejs') %>
 <div class="main">
     <div class="title">
-        <h3><%= title %></h3><br>
+    <h3><%= title %></h3><br>
     </div>
     <form class="form-container" action="/record/upload/add" method="post" enctype="multipart/form-data">
         <div class="all_box">
@@ -62,27 +65,29 @@
             <div class="description_box">
                 <div class="form-group_de">
                     <label>Description</label>
-                    <textarea class="form-control" rows="6" name="description" placeholder="Please enter your description"></textarea>
+                    <textarea class="form-control" rows="6" name="description" id="description" placeholder="Please enter your description"></textarea>
                 </div>
             </div>
             <div class="identification-time_box">
                 <div class="form-group_ind" style="margin-bottom: 15px">
                     <label>IDENTIFICATION</label>
-                    <input type="text" class="form-control" name="identification" placeholder="Please enter the bird's identification">
+                    <input type="text" class="form-control" name="identification" id="identification" placeholder="Please enter the bird's identification">
+                    <button type="button" id="identify_button_click" style="float: right;margin-bottom: 10px">Get identification</button>
                 </div>
-                <div class="form-group_code">
+                <div class="form-group_code" style="margin-top: 30px">
                     <label>UPLOAD CODE</label>
                     <input type="text" class="form-control" name="code" id="code" placeholder="Please enter the bird's identification">
                     <button type="button" onclick="generateUniquePassword()" style="float: right;margin-bottom: 10px">Get Upload Code</button>
                 </div>
             </div>
+                    </div>
 
-        </div>
         <div>
             <button type="submit">UPLOAD</button>
         </div>
     </form>
 </div>
+    </body>
 
 <script>
     function getCurrentTime() {
@@ -108,14 +113,196 @@
         const uniquePassword = nickname + timestamp.substr(-4);
         document.getElementById("code").value = uniquePassword;
     }
-
+    const witnesses = "<%=nickname%>";
+    console.log(witnesses);
 
 
 
 </script>
 </body>
+
+        <script>
+
+            function checkInputFilledById(e) {
+                console.log(e);
+                //const input = document.getElementById(id);
+                //if (input) {
+                //    if (input.isEmpty()) {
+                //        console.log("Please fill the fields ")location_button_click
+                //    } else {
+                //         console.log("all are fi the fields ")
+                //    }
+                // }
+                //return false;
+            }
+
+            const location_button = document.getElementById("location_button_click");
+            location_button.addEventListener("click", getLocation);
+
+            const time_button = document.getElementById("time_button_click");
+            time_button.addEventListener("click", getCurrentTime);
+
+            //const idedntify_button = document.getElementById("identify_button_click");
+            //time_button.addEventListener("click", getIdentification);
+
+            const description = document.getElementById("description");
+            description.addEventListener("input", checkInputFilledById);
+            console.log(description);
+
+            const listen_location = document.getElementById("location_input");
+            listen_location.addEventListener("input", checkInputFilledById);
+            console.log(listen_location);
+
+            const time = document.getElementById("time");
+            time.addEventListener("input", checkInputFilledById);
+            console.log(time);
+            const identificationSelect = document.getElementById("identification")
+            identificationSelect.addEventListener("click", async() => {
+                try {
+                    const response = fetch('/record/upload/bird_list', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }).then(function(response) {
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Loop through the data and create options
+                            console.log(data);
+                            for (let i = 0; i < data.data.bird_list.length; i++) {
+                                const option = data.data.bird_list[i];
+                                const optionElement = document.createElement("option");
+                                optionElement.value = option;
+                                optionElement.textContent = option;
+                                identificationSelect.appendChild(optionElement);
+                            }
+                        })
+                } catch (error) {
+                    console.error("Error fetching bird list:", error);
+                }
+            });
+
+
+            // const location_button = document.getElementById("location_button_click");
+            // location_button.addEventListener("click", getLocation);
+            //
+            // const time_button = document.getElementById("time_button_click");
+            // time_button.addEventListener("click", getCurrentTime);
+            //
+            // //const idedntify_button = document.getElementById("identify_button_click");
+            // //time_button.addEventListener("click", getIdentification);
+            //
+            // const description = document.getElementById("description");
+            // description.addEventListener("input", checkInputFilledById);
+            // console.log(description);
+            //
+            // const listen_location = document.getElementById("location_input");
+            // listen_location.addEventListener("input", checkInputFilledById);
+            // console.log(listen_location);
+            //
+            // const time = document.getElementById("time");
+            // time.addEventListener("input", checkInputFilledById);
+            // console.log(time);
+
+            const identifyButton = document.getElementById("identify_button_click");
+            //identifyButton.addEventListener("click", fetchBirdList);
+            identifyButton.addEventListener("click", () => {
+                const identificationValue = identificationSelect.value;
+                console.log("Selected identification:", identificationValue);
+                if (identificationValue) {
+                const description = document.getElementById("description").value;
+                const photo = document.getElementById("preview").src;
+                const location = document.getElementById("location-input").value;
+
+                if (photo && location && description) {
+                    const data = {
+                        identification: identificationValue,
+                    };
+                    console.log(data)
+                    fetch('/record/upload/identifier',{
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(response => response.json())
+                        .then(data => {
+                            if (data.code === 200) {
+                                console.log("Found bird URI:", data.data.birdURI);
+                                identificationSelect.value = data.data.birdURI;
+                                console.log("Found bird URI:", data);
+                                document.getElementById("identification").value= data.data.birdURI;
+                            } else {
+                                document.getElementById("identification").value = "NA";
+                                console.log("Bird not found on DBpedia.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching bird URI:", error);
+                        });
+                } else {
+                    console.log("Please enter both identification and description.");
+
+                }
+            });
+            // fetch("http://localhost:3001/record/upload/identifier", {
+            //     method: "POST",
+            //    body: JSON.stringify({
+            //        description,
+            //       listen_location
+            //   })
+            //).then(res => res.json())
+            //.then(data => {
+            //console.log(data);
+            //})
+
+            function checkEventListeners(id1, id2, id3) {
+                let el1 = document.getElementById(id1);
+                let el2 = document.getElementById(id2);
+                let el3 = document.getElementById(id3);
+
+                //if (el1.value.length == 0 && el2.value.length == 0 && el3.value.length == 0) {
+                //    return false;
+                //} else {
+                //    return true;
+                //}
+            }
+
+
+            //let result = checkEventListeners('description', 'listen_location', 'time');
+            //if (true) {
+            //   const dateTime = document.querySelector('#time').value;
+            //   const description = document.querySelector('#description ').value;
+
+            //const photo = document.querySelector('#picture').value;
+            //const location = document.querySelector('#location').value;
+            //console.log(description, photo, location, dateTime);
+            //const latitude = document.querySelector('#latitude ').value;
+            //const location = {
+            //    type: 'Point ',
+            //    coordinates: [longitude, latitude]
+            //};
+
+            //const query = saveBirdSighting({
+            //   body: {
+            //        dateTime: dateTime,
+            //       description: description,
+            //        photo: photo,
+            //        location: location
+            //    }
+            //});
+            //document.getElementById("time_button_click ") = query;
+            //console.log('At least one input field has an event listener for "input " events. ', query);
+            //} else {
+            //    console.log('None of the input fields have an event listener for input events. ');
+            //}
+        </script>
+        <script src="/javascripts/database.js"></script>
+</body>
 <footer class="text-muted bg-indigo" id="footer">
     <%- include('includes/footer.ejs') %>
 </footer>
 <%- include('includes/script.ejs') %>
+
 </html>

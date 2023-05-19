@@ -20,7 +20,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
 	console.log('[ServiceWorker] Activated');
-	//TODO add indexedDB in it.
+
 	event.waitUntil(async function () {
 		const cachesKeys = await caches.keys();
 		const deletePromises = cachesKeys.map((cacheName) => {

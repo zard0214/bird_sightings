@@ -1,3 +1,91 @@
+@media only screen and (max-width: 600px) {
+    .all_box {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 20px;
+        padding: 0 10px;
+    }
+
+    .picture_box,
+    .map_box,
+    .description_box,
+    .identification-time_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 30px 10px;
+        border-radius: 10px;
+    }
+
+    .location_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 50px 10px; // 增加垂直内边距
+    border-radius: 10px;
+        font-size: 20px; // 增大字体大小
+    }
+
+    .picture {
+        margin: 0 auto;
+    }
+
+    .location_box button,
+    .identification-time_box button,
+    form button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .all_box {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 20px;
+        padding: 0 10px;
+    }
+
+    .picture_box,
+    .description_box,
+    .identification-time_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 30px 10px;
+        border-radius: 10px;
+    }
+
+    .map_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 50px 10px; // 增加垂直内边距
+        border-radius: 10px;
+        font-size: 20px; // 增大字体大小
+    }
+
+    .picture {
+        margin: 0 auto;
+    }
+
+    .location_box button,
+    .identification-time_box button,
+    form button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 18px;
+    }
+}
+
+
+
 .title {
     text-align: center;
     margin-bottom: 20px;

@@ -1,5 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    select {
+        font-size: 14px;
+        height: 30px;
+        color: #333;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: none;
+        transition: border-color 0.3s ease;
+    }
+    
+    select:focus {
+        outline: none;
+        border-color: orange;
+    }
+    
+    button {
+        border-radius: 30px;
+        background: white;
+        border-color: orange;
+    }
+    
+    button:active {
+        background-color: #555;
+    }
+    
+    input:focus {
+        outline: none;
+        border-color: orange;
+    }
+    
+    th {
+        background-color: orange;
+        color: white;
+    }
+</style>
+
 <head>
     <%- include('includes/head.ejs') %>
     <link rel='stylesheet' href='/stylesheets/sightings_page.css'>
@@ -14,7 +52,7 @@
                 <input style="width: 220px;" type="datetime-local" name="startTime" id="startTime" >
                 <input style="width: 220px" type="datetime-local" name="endTime" id="endTime">
                 <input style="width: 220px;height:30px" type="text" id="myInput" name="input_field" placeholder="Enter identification or username">
-                <select name="identifier_type" >
+                <select name="identifier_type"style="width: 220px" >>
                     <option value="identification">identification</option>
                     <option value="witnesses">witnesses</option>
                 </select>
@@ -38,6 +76,7 @@
             </form>
         </div>
     </div>
+    <div class="table-container">
     <table class="table table-bordered" style="margin-top: 30px">
         <thead>
         <tr><th style="text-align:center;">ID</th><th style="text-align:center;">Time</th><th style="text-align:center;">Identification</th><th style="text-align:center;">Location</th><th style="text-align:center;">User</th><th style="text-align:center;">Action</th></tr>

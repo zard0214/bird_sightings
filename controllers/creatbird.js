@@ -1,6 +1,7 @@
 const path = require('path');
 const formidable = require('formidable');
 const Bird = require('../models/bird');
+const fetch = require('node-fetch');
 
 /**
  * insert the sighting records
@@ -10,10 +11,11 @@ const Bird = require('../models/bird');
 const uploadBird = (req, res) => {
     const form = new formidable.IncomingForm();
     form.uploadDir = path.join(__dirname, '../', 'public', 'uploads');
-    console.log(form.uploadDir)
+
+    console.log(form.uploadDir )
     form.keepExtensions = false;
     form.parse(req, async (err, fields, files) => {
-        console.log(fields.code)
+        // res.send(files.picture.filepath.split('public')[1])
         if (err) {
             console.log(err);
             return res.status(500).json({ error: 'Failed to parse form data' });
