@@ -1,53 +1,70 @@
-const CACHE_NAME = 'my-cache';
-const urlsToCache = [
-    '/',
+let cache = null;
+let dataCacheName = 'birdData';
+let cacheName = 'birdSightingApp';
+let filesToCache = [
+    '/javacripts/app.js',
     '/stylesheets/upload.css',
     '/image/upload.png',
+    '/',
+    '/javascripts/chat.js',
+    '/javascripts/menu.js'
     // Add other URLs to cache here
 ];
 
-self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Cache opened');
-                return cache.addAll(urlsToCache);
-            })
-    );
+self.addEventListener('install', function (e) {
+    console.log('[ServiceWorker] Install');
+    e.waitUntil(
+        caches.open(cacheName).then(function (cacheX) {
+            console.log('[ServiceWorker] caching app data');
+            cache = cacheX;
+            return cache.addAll(filesToCache)
+        })
+    )
 });
 
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Cache hit - return the response
-                if (response) {
-                    return response;
+self.addEventListener('activate', function(e) {
+    console.log('[ServiceWorker] Activated');
+    e.waitUntil(
+        cache.keys().then(function (keyList) {
+            return Promise.all(keyList.map(function (key) {
+                if (key !== cacheName && key !== dataCacheName) {
+                    console.log('[ServiceWorker] Removing old cache', key);
+                    return caches.delete(key);
                 }
-
-                // Clone the request since it's a stream and can only be consumed once
-                const fetchRequest = event.request.clone();
-
-                return fetch(fetchRequest)
-                    .then(response => {
-                        // Check if we received a valid response
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
-                        }
-
-                        // Clone the response since it's a stream and can only be consumed once
-                        const responseToCache = response.clone();
-
-                        caches.open(CACHE_NAME)
-                            .then(cache => {
-                                cache.put(event.request, responseToCache);
-                            });
-
-                        return response;
-                    });
-            })
-            .catch(error => {
-                console.error('Error fetching and caching:', error);
-            })
+            }));
+        })
     );
+    return self.clients.claim();
+});
+
+self.addEventListener('fetch', function (e){
+    console.log('[Service Worker] Fetch', e.request.url);
+    let dataUrl = '/bird_data';
+    if (e.request.url.indexOf(dataUrl) > -1) {
+        return fetch(e.request)
+            .then((response) => {
+                return response;
+            })
+            .catch((error)=> {
+                return error;
+            })
+    } else {
+        e.respondWith(
+            caches.match(e.request).then(function (response) {
+                return response
+                    || fetch(e.request)
+                        .then(function(response) {
+                            if (!response.ok || response.statusCode>299) {
+                                console.log("error: " + response.error());
+                            } else {
+                                cache.add(e.request.url);
+                                return(response);
+                            }
+                        })
+                        .catch(function(err) {
+                            console.log("error: " + err);
+                        })
+            })
+        );
+    }
 });

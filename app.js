@@ -56,9 +56,6 @@ app.use(function(err, req, res, next) {
     res.render('error', {status: err.status, message: err.message});
 });
 
-app.get("/service_worker.js", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "public/javascripts", "service_worker.js"));
-});
 
 
 

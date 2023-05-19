@@ -200,6 +200,7 @@
             }
 
 
+
             //let result = checkEventListeners('description', 'listen_location', 'time');
             //if (true) {
             //   const dateTime = document.querySelector('#time').value;
@@ -228,72 +229,9 @@
             //    console.log('None of the input fields have an event listener for input events. ');
             //}
 
-            // Check if service workers are supported
-            if ('serviceWorker' in navigator) {
-                // Register the service worker
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('upload_worker.js')
-                        .then(registration => {
-                            console.log('Service Worker registered with scope:', registration.scope);
-                        })
-                        .catch(error => {
-                            console.error('Service Worker registration failed:', error);
-                        });
-                });
-            }
-
-        // Open or create the IndexedDB database
-        const request = indexedDB.open('myDatabase', 1);
-
-        request.onupgradeneeded = event => {
-        const db = event.target.result;
-        db.createObjectStore('formData', { autoIncrement: true });
-        };
-
-        request.onerror = event => {
-        console.error('IndexedDB error:', event.target.error);
-        };
-
-        request.onsuccess = event => {
-        const db = event.target.result;
-
-        function storeFormData(formData) {
-        const transaction = db.transaction(['formData'], 'readwrite');
-        const objectStore = transaction.objectStore('formData');
-        const request = objectStore.add(formData);
-
-        request.onsuccess = () => {
-        console.log('Form data stored in IndexedDB.');
-        };
-
-        request.onerror = () => {
-        console.error('Error storing form data in IndexedDB.');
-        };
-        }
-
-    // Example usage:
-    // Call storeFormData(formData) to store form data
-        };
-
-            // Check online/offline status
-            function updateOnlineStatus() {
-                if (navigator.onLine) {
-                    // Online status, sync data or perform other actions
-
-                    console.log('Online');
-                } else {
-                    // Offline status, notify the user or perform other actions
-
-                    console.log('Offline');
-                }
-            }
-
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-
-
 
         </script>
+        <script src="/public/javascripts/database.js"></script>
 </body>
 
 </html>
