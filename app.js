@@ -7,15 +7,18 @@ var bodyParser = require('body-parser');
 
 var login = require('./routes/user');
 var index = require('./routes/index');
-var upload= require('./routes/upload');
-var chat= require('./routes/chat');
+var upload = require('./routes/upload');
+var chat = require('./routes/chat');
 
 var app = express();
 
 // swagger api
 var swaggerInstall = require('./util/swagger')
-const {error} = require("swagger-node-express");
+const { error } = require("swagger-node-express");
 swaggerInstall(app)
+
+// const multer = require('multer');
+// app.use(multer().any()); // 添加 multer 中间件
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,28 +35,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', login);
 app.use('/login', login);
 app.use('/record', index);
-app.use('/record/upload',upload);
+app.use('/record/upload', upload);
 app.use('/chat', chat);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  if(err.status === 404)
-    res.render('error', {status: err.status, message: 'Page Not Found'});
+  if (err.status === 404)
+    res.render('error', { status: err.status, message: 'Page Not Found' });
   else
-    res.render('error', {status: err.status, message: err.message});
+    res.render('error', { status: err.status, message: err.message });
 });
 
 

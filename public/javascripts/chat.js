@@ -31,7 +31,7 @@ function init() {
     // called when a message is received
     socket.on('chat', function (room, userId, chatText) {
         let who = userId
-        if (userId === name) who = 'Me';
+        // if (userId === name) who = 'Me';
         // write on history
         writeOnHistory('<b style="padding: 15px">' + who + ':</b> ' + chatText);
         writeHistory(room, userId, chatText);
@@ -113,9 +113,9 @@ function writeChatHistory(room, userId) {
                 // console.log("record:" + data.chat[i]._id)
                 // console.log("user:" + data.chat[i].user)
                 // console.log("chat_text:" + data.chat[i].chat_text)
-                if (userId === name) who = 'Me';
-                else
-                    who =  data.chat[i].user;
+                // if (userId === name) who = 'Me';
+                // else
+                who =  data.chat[i].user;
                 chat_text = data.chat[i].chat_text;
                 writeOnHistory('<b style="padding: 15px">' + who + ':</b> ' + chat_text);
             }

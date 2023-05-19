@@ -6,7 +6,7 @@
 var app = require('../app');
 var debug = require('debug')('bird_watching:server');
 var http = require('http');
-
+const multer = require('multer');
 /**
  * Get port from e
  * Create HTTP sernvironment and store in Express.

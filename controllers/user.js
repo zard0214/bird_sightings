@@ -1,7 +1,7 @@
 const User = require('../models/user');
 
 /**
- * user logout function
+ * User login function
  * @param req
  * @param res
  */
@@ -11,12 +11,25 @@ function login(req, res) {
         if (!nickname) {
             return res.status(400).json({
                 success: false,
-                message: 'Username are required fields',
+                message: 'Username is a required field',
             });
-        }else{
-            req.session.nickname = nickname;
-            // res.redirect('/sighting/fetchSightingWithPage');
-            res.redirect('/record');
+        } else {
+            User.create({ nickname: nickname })
+                .then(createdUser => {
+                    console.log('New user created:', createdUser);
+
+                    // Store the user ID (_id) in the session
+                    req.session.nickname = nickname;
+
+                    res.redirect('/record');
+                })
+                .catch(error => {
+                    console.error('Error creating user:', error);
+                    res.status(500).json({
+                        success: false,
+                        message: 'Internal server error',
+                    });
+                });
         }
     } catch (err) {
         // If there's an error, return an error message and log the error to the console
@@ -28,9 +41,8 @@ function login(req, res) {
     }
 }
 
-
 /**
- * user logout function
+ * User logout function
  * @param req
  * @param res
  */
