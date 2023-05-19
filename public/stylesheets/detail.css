@@ -1,3 +1,91 @@
+@media only screen and (max-width: 600px) {
+    .all_box {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 20px;
+        padding: 0 10px;
+    }
+
+    .picture_box,
+    .map_box,
+    .description_box,
+    .identification-time_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 30px 10px;
+        border-radius: 10px;
+    }
+
+    .location_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 50px 10px; // 增加垂直内边距
+    border-radius: 10px;
+        font-size: 20px; // 增大字体大小
+    }
+
+    .picture {
+        margin: 0 auto;
+    }
+
+    .location_box button,
+    .identification-time_box button,
+    form button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .all_box {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 20px;
+        padding: 0 10px;
+    }
+
+    .picture_box,
+    .description_box,
+    .identification-time_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 30px 10px;
+        border-radius: 10px;
+    }
+
+    .map_box {
+        grid-column: span 2;
+        text-align: center;
+        padding: 50px 10px; // 增加垂直内边距
+        border-radius: 10px;
+        font-size: 20px; // 增大字体大小
+    }
+
+    .picture {
+        margin: 0 auto;
+    }
+
+    .location_box button,
+    .identification-time_box button,
+    form button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 18px;
+    }
+}
+
+
+
 .title {
     text-align: center;
     margin-bottom: 20px;
@@ -8,17 +96,29 @@
     grid-template-rows: repeat(2, 1fr);
     grid-gap: 40px;
 }
-
-.upload_box,
-.location_box,
-.map_box,
-.picture_box,
-.identification-time_box {
+.picture_box{
     grid-column: span 1;
     padding: 20px;
     background-color: #f5f5f5;
     border: 1px solid #e67818;
     border-radius: 5px;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+
+}
+.location_box,
+.map_box,
+.description-time_box {
+    grid-column: span 1;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e67818;
+    border-radius: 5px;
+}
+
+.picture{
+    margin-left: 175px;
 }
 
 .description_box{
@@ -30,42 +130,17 @@
 }
 
 
-upload_box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.upload_box label{
-    text-align: left;
-
-}
-
-.container_picture {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.container_picture label:first-child {
-    text-align: left;
-}
-
-.pre {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.upload_box img {
-    max-width: 100%;
-    max-height: 150px;
-}
 
 
-.upload_box #upload {
-    margin-top: 10px;
-}
+
+/*.picture_box img {*/
+/*    max-width: 100%;*/
+/*    max-height: 150px;*/
+/*}*/
 
 
+
+.picture_box label,
 .identification_box label,
 .location_box label,
 .time_box label,

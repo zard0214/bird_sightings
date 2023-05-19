@@ -1,3 +1,37 @@
+@media screen and (max-width: 400px) {
+    .startTime,
+    .endTime,
+    .myInput,
+    .search-container input,
+    .search-container select,
+    .search-container button,
+    .table-container {
+        width: 200px;
+        margin-bottom: 10px;
+    }
+
+
+
+
+    td:nth-of-type(4), th:nth-of-type(4) {
+        display: none;
+    }
+    .pagination li {
+        display: block;
+        margin-bottom: 5px;
+    }
+    h3 {
+        font-size: 1.2em;
+    }
+    button {
+        padding: 10px;
+        font-size: 0.8em;
+    }
+    .menu {
+        flex-direction: column;
+    }
+}
+
 select {
     font-size: 14px;
     height: 30px;
@@ -17,6 +51,7 @@ button {
     border-radius: 30px;
     background: white;
     border-color: orange;
+
 }
 button:active {
     background-color: #555;
@@ -24,9 +59,36 @@ button:active {
 input:focus{
     outline: none;
     border-color: orange;
-
+}
+table {
+    border-collapse: collapse;
 }
 th {
     background-color: orange;
     color: white;
+}
+.sort-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.sort-btn .arrow-up {
+    display: none;
+}
+.sort-btn .arrow-down {
+    display: none;
+}
+
+.sort-btn[data-sort-order="ascend"] .arrow-down {
+    display: none;
+}
+
+.sort-btn[data-sort-order="ascend"] .arrow-up {
+    display: inline-block;
+}
+
+.sort-btn[data-sort-order="descend"] .arrow-down {
+    display: inline-block;
 }
